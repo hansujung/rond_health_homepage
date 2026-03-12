@@ -3,766 +3,305 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rond Health IR</title>
-
+<title>RONDHealth — 지능형 검사실 디지털트윈</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-/* ② NanumSquareNeo — jsDelivr CDN */
-@font-face {
-  font-family: 'NanumSquareNeo';
-  font-weight: 400; font-style: normal; font-display: swap;
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-aLt.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'NanumSquareNeo';
-  font-weight: 700; font-style: normal; font-display: swap;
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-cBd.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'NanumSquareNeo';
-  font-weight: 800; font-style: normal; font-display: swap;
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-dEb.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'NanumSquareNeo';
-  font-weight: 900; font-style: normal; font-display: swap;
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-eHv.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'KoPubWorldDotum';
-  font-weight: 300; font-style: normal; font-display: swap;
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2205@1.0/KoPubWorldDotumLight.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'KoPubWorldDotum';
-  font-weight: 500; font-style: normal; font-display: swap;
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2205@1.0/KoPubWorldDotumMedium.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'KoPubWorldDotum';
-  font-weight: 700; font-style: normal; font-display: swap;
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2205@1.0/KoPubWorldDotumBold.woff2') format('woff2');
-}
-
-/* ③ 기본 리셋 — 스타일 격리 */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html {
-  /* ④ 스크롤 처리 */
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-body {
-  font-family: 'KoPubWorldDotum', 'Noto Sans KR', sans-serif;
-  background: #ffffff;
-  color: #0A1628;
-  overflow-x: hidden;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  word-break: keep-all;
-  /* ⑤ 기본 margin 제거 */
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
 :root {
   --blue: #2C75FF;
   --blue-dark: #1A5FE8;
   --blue-light: #5C96FF;
   --blue-pale: #EEF4FF;
-  --blue-mid: #C8DAFF;
-  --white: #FFFFFF;
-  --off-white: #F7F9FC;
-  --gray-50: #F0F4FA;
-  --gray-100: #E2E8F4;
+  --dark: #0A1628;
+  --gray-50: #F7F9FC;
+  --gray-100: #EEF2F8;
+  --gray-200: #DDE4F0;
   --gray-300: #A0AEBF;
   --gray-500: #617089;
   --gray-700: #2D3F58;
-  --dark: #0A1628;
-  --font-display: 'NanumSquareNeo', 'Noto Sans KR', sans-serif;
-  --font-body: 'KoPubWorldDotum', 'Noto Sans KR', sans-serif;
-  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  --font: 'Inter', 'Noto Sans KR', sans-serif;
+  --ease: 0.25s cubic-bezier(0.4,0,0.2,1);
 }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { overflow-x: hidden; scroll-behavior: smooth; }
+body { font-family: var(--font); background: #fff; color: var(--dark); overflow-x: hidden; word-break: keep-all; }
 
-/* ── LANG TOGGLE ── */
-.lang-en { display: none; }
-body.en .lang-ko { display: none; }
-body.en .lang-en { display: block; }
-body.en span.lang-ko { display: none; }
-body.en span.lang-en { display: inline; }
-span.lang-en { display: none; }
+/* LANG */
+.lang-en { display: none !important; }
+body.en .lang-ko { display: none !important; }
+body.en .lang-en { display: block !important; }
+body.en span.lang-en { display: inline !important; }
+span.lang-en { display: none !important; }
 
-/* ── NAV ── */
+/* NAV */
 nav {
-  position: sticky; /* ⑥ Sticky 포지셔닝 적용 */
-  top: 0; left: 0; right: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 48px;
-  height: 72px;
-  background: rgba(255,255,255,0.95);
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(255,255,255,0.97);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--gray-100);
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 60px;
 }
-.nav-logo {
-  font-family: var(--font-display);
-  font-size: 20px; font-weight: 900;
-  color: var(--dark); letter-spacing: -0.03em;
-  text-decoration: none;
-}
+.nav-logo { font-size: 20px; font-weight: 800; color: var(--dark); text-decoration: none; letter-spacing: -0.03em; }
 .nav-logo span { color: var(--blue); }
-.nav-links { display: flex; gap: 32px; list-style: none; }
-.nav-links a {
-  font-size: 14px; font-weight: 500;
-  color: var(--gray-500); text-decoration: none;
-  transition: color var(--transition); letter-spacing: -0.01em;
-}
-.nav-links a:hover { color: var(--blue); }
-.nav-right { display: flex; align-items: center; gap: 20px; }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a { font-size: 16px; font-weight: 500; color: var(--gray-500); text-decoration: none; transition: color var(--ease); }
+.nav-links a:hover { color: var(--dark); }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.lang-toggle { display: flex; background: var(--gray-50); border-radius: 100px; padding: 3px; gap: 2px; border: 1px solid var(--gray-100); }
+.lang-btn { font-size: 13px; font-weight: 700; padding: 5px 13px; border: none; border-radius: 100px; cursor: pointer; transition: all var(--ease); background: transparent; color: var(--gray-300); }
+.lang-btn.active { background: var(--blue); color: white; }
+.nav-cta { background: var(--dark); color: white; padding: 9px 20px; border-radius: 8px; font-size: 15px; font-weight: 600; text-decoration: none; transition: all var(--ease); }
+.nav-cta:hover { background: var(--blue); }
 
-/* ── LANG TOGGLE BUTTON ── */
-.lang-toggle {
-  display: flex; background: var(--gray-50);
-  border-radius: 100px; padding: 3px; gap: 2px;
-  border: 1px solid var(--gray-100);
-}
-.lang-btn {
-  font-family: var(--font-display);
-  font-size: 11px; font-weight: 800;
-  padding: 6px 14px; border: none; border-radius: 100px;
-  cursor: pointer; transition: all var(--transition);
-  background: transparent; color: var(--gray-300); letter-spacing: 0.03em;
-}
-.lang-btn.active {
-  background: var(--blue); color: var(--white);
-  box-shadow: 0 2px 8px rgba(44,117,255,0.35);
-}
-
-/* ── HERO ── */
-.hero {
-  min-height: 100vh;
-  display: grid; grid-template-columns: 1fr 1fr;
-  align-items: center; overflow: hidden; position: relative;
-}
+/* HERO */
+.hero { padding: 96px 60px 0; text-align: center; background: #fff; position: relative; overflow: hidden; }
 .hero::before {
-  content: ''; position: absolute;
-  top: -200px; right: -200px;
-  width: 700px; height: 700px;
-  background: radial-gradient(circle, rgba(44,117,255,0.08) 0%, transparent 70%);
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 70%;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(44,117,255,0.07) 0%, transparent 70%);
   pointer-events: none;
 }
-.hero-content { padding: 80px 64px 80px 80px; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
   background: var(--blue-pale); color: var(--blue);
-  font-family: var(--font-display);
-  font-size: 11px; font-weight: 800; letter-spacing: 0.04em;
-  text-transform: uppercase; padding: 6px 14px;
-  border-radius: 100px; margin-bottom: 28px;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+  border: 1px solid rgba(44,117,255,0.15);
 }
-.hero-badge::before {
-  content: ''; width: 6px; height: 6px;
-  background: var(--blue); border-radius: 50%;
-}
+.hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--blue); border-radius: 50%; }
 .hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 3.8vw, 54px); font-weight: 900;
-  line-height: 1.25; letter-spacing: -0.04em;
-  color: var(--dark); margin-bottom: 24px; word-break: keep-all;
+  font-size: clamp(44px, 5.2vw, 72px); font-weight: 900;
+  line-height: 1.12; letter-spacing: -0.04em; color: var(--dark);
+  max-width: 860px; margin: 0 auto 24px;
 }
-.hero-title .accent { color: var(--blue); }
-.hero-desc {
-  font-family: var(--font-body);
-  font-size: 16px; line-height: 1.85; color: var(--gray-500);
-  max-width: 480px; margin-bottom: 40px;
-  font-weight: 300; letter-spacing: -0.01em; word-break: keep-all;
+.hero-title .gradient {
+  background: linear-gradient(135deg, var(--blue) 0%, #7C3AED 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-desc { font-size: 20px; line-height: 1.75; color: var(--gray-500); max-width: 560px; margin: 0 auto 44px; font-weight: 400; }
+.hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 72px; }
 .btn-primary {
+  background: var(--blue); color: white; padding: 14px 32px; border-radius: 10px;
+  font-size: 17px; font-weight: 700; text-decoration: none;
   display: inline-flex; align-items: center; gap: 8px;
-  background: var(--blue); color: var(--white); padding: 14px 28px;
-  border-radius: 12px; font-family: var(--font-display);
-  font-size: 14px; font-weight: 800; text-decoration: none;
-  transition: all var(--transition);
-  box-shadow: 0 4px 20px rgba(44,117,255,0.3); letter-spacing: -0.01em;
-  border: none; cursor: pointer;
+  transition: all var(--ease); box-shadow: 0 4px 20px rgba(44,117,255,0.3);
 }
-.btn-primary:hover {
-  background: var(--blue-dark); transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(44,117,255,0.4);
-}
-.btn-secondary {
+.btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(44,117,255,0.4); }
+.btn-outline {
+  background: transparent; color: var(--dark); padding: 14px 32px; border-radius: 10px;
+  font-size: 17px; font-weight: 700; text-decoration: none;
   display: inline-flex; align-items: center; gap: 8px;
-  background: transparent; color: var(--blue); padding: 14px 28px;
-  border-radius: 12px; font-family: var(--font-display);
-  font-size: 14px; font-weight: 800; text-decoration: none;
-  border: 1.5px solid var(--blue-mid); transition: all var(--transition);
-  letter-spacing: -0.01em; cursor: pointer;
+  border: 1.5px solid var(--gray-200); transition: all var(--ease);
 }
-.btn-secondary:hover { background: var(--blue-pale); border-color: var(--blue); }
+.btn-outline:hover { border-color: var(--dark); }
 
-/* HERO VISUAL */
-.hero-visual {
-  height: 100%; min-height: 100vh;
-  background: linear-gradient(145deg, var(--dark) 0%, #0F2348 60%, #1A3A7A 100%);
-  display: flex; flex-direction: column;
-  justify-content: center; align-items: center;
-  padding: 80px 60px; position: relative; overflow: hidden;
-}
-.hero-visual::before {
-  content: ''; position: absolute; bottom: -100px; left: -100px;
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(44,117,255,0.2) 0%, transparent 70%);
-}
-.hero-visual::after {
-  content: ''; position: absolute; top: 50px; right: -50px;
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(92,150,255,0.12) 0%, transparent 70%);
-}
-.lab-viz { position: relative; z-index: 2; width: 100%; max-width: 440px; }
-.lab-card {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 20px; padding: 28px 32px;
-  backdrop-filter: blur(10px); margin-bottom: 16px;
-  animation: floatUp 6s ease-in-out infinite;
-}
-.lab-card:nth-child(2) { animation-delay: 1.5s; }
-.lab-card:nth-child(3) { animation-delay: 3s; }
-@keyframes floatUp {
-  0%,100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-}
-.lab-card-header {
-  display: flex; align-items: center;
-  justify-content: space-between; margin-bottom: 14px;
-}
-.lab-card-title {
-  font-family: var(--font-display); font-size: 11px; font-weight: 800;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-}
-.lab-card-status {
-  display: flex; align-items: center; gap: 6px;
-  font-family: var(--font-display); font-size: 11px;
-  color: #4ADE80; font-weight: 800; letter-spacing: 0.03em;
-}
-.status-dot {
-  width: 6px; height: 6px; background: #4ADE80;
-  border-radius: 50%; animation: pulse 2s ease infinite;
-}
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-.lab-metric { display: flex; align-items: baseline; gap: 6px; }
-.lab-metric-value {
-  font-family: var(--font-display); font-size: 36px; font-weight: 900;
-  color: var(--white); letter-spacing: -0.04em;
-}
-.lab-metric-unit {
-  font-family: var(--font-body); font-size: 14px;
-  color: rgba(255,255,255,0.5); font-weight: 300;
-}
-.lab-metric-label {
-  font-family: var(--font-body); font-size: 13px;
-  color: rgba(255,255,255,0.6); margin-top: 4px;
-  font-weight: 300; letter-spacing: -0.01em;
-}
-.mini-bars {
-  display: flex; gap: 4px; align-items: flex-end;
-  height: 32px; margin-top: 12px;
-}
-.mini-bar {
-  flex: 1; background: rgba(44,117,255,0.4);
-  border-radius: 3px; animation: barGrow 3s ease-in-out infinite;
-}
-.mini-bar:nth-child(1){height:40%;animation-delay:0s}
-.mini-bar:nth-child(2){height:70%;animation-delay:.2s}
-.mini-bar:nth-child(3){height:50%;animation-delay:.4s}
-.mini-bar:nth-child(4){height:90%;animation-delay:.6s;background:rgba(44,117,255,0.7)}
-.mini-bar:nth-child(5){height:60%;animation-delay:.8s}
-.mini-bar:nth-child(6){height:80%;animation-delay:1s;background:rgba(44,117,255,0.6)}
-.mini-bar:nth-child(7){height:45%;animation-delay:1.2s}
-@keyframes barGrow { 0%,100%{opacity:.6} 50%{opacity:1} }
-.algo-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-.algo-pill {
-  background: rgba(44,117,255,0.2);
-  border: 1px solid rgba(44,117,255,0.4);
-  color: rgba(255,255,255,0.85);
-  font-family: var(--font-display); font-size: 11px; font-weight: 800;
-  padding: 4px 10px; border-radius: 100px; letter-spacing: 0.02em;
-}
-.algo-pill.active {
-  background: var(--blue); border-color: var(--blue);
-  box-shadow: 0 0 12px rgba(44,117,255,0.5);
-}
-.hero-tagline {
-  font-family: var(--font-body); font-size: 12px; font-weight: 500;
-  letter-spacing: 0.06em; text-transform: uppercase;
-  color: rgba(255,255,255,0.4); text-align: center;
-  margin-top: 32px; position: relative; z-index: 2;
-}
-
-/* ── SECTION BASE ── */
-section { padding: 100px 80px; }
-.section-label {
-  font-family: var(--font-display); font-size: 11px; font-weight: 800;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--blue); margin-bottom: 16px;
-}
-.section-title {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 2.8vw, 42px); font-weight: 900;
-  line-height: 1.3; letter-spacing: -0.04em;
-  color: var(--dark); margin-bottom: 20px; word-break: keep-all;
-}
-.section-title .accent { color: var(--blue); }
-.section-desc {
-  font-family: var(--font-body); font-size: 16px; line-height: 1.9;
-  color: var(--gray-500); max-width: 600px; font-weight: 300;
-  margin-bottom: 60px; letter-spacing: -0.01em; word-break: keep-all;
-}
-
-/* ── VISION ── */
-.vision-section { background: var(--dark); padding: 100px 80px; }
-.vision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.vision-left .section-label { color: var(--blue-light); }
-.vision-left .section-title { color: var(--white); }
-.vision-statement {
-  font-family: var(--font-body); font-size: clamp(18px,1.8vw,24px);
-  font-weight: 700; line-height: 1.7; color: var(--white);
-  border-left: 3px solid var(--blue); padding-left: 24px;
-  margin-top: 32px; letter-spacing: -0.02em; word-break: keep-all;
-}
-.mission-cards { display: flex; flex-direction: column; gap: 16px; }
-.mission-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px; padding: 24px 28px;
-  display: flex; align-items: flex-start; gap: 20px;
-  transition: all var(--transition);
-}
-.mission-card:hover {
-  background: rgba(44,117,255,0.08);
-  border-color: rgba(44,117,255,0.3); transform: translateX(8px);
-}
-.mission-icon {
-  width: 44px; height: 44px; background: rgba(44,117,255,0.15);
-  border-radius: 12px; display: flex; align-items: center;
-  justify-content: center; font-size: 20px; flex-shrink: 0;
-}
-.mission-text h4 {
-  font-family: var(--font-display); font-size: 14px; font-weight: 800;
-  color: var(--white); margin-bottom: 6px;
-  letter-spacing: -0.02em; word-break: keep-all;
-}
-.mission-text p {
-  font-family: var(--font-body); font-size: 13px;
-  color: rgba(255,255,255,0.5); line-height: 1.7;
-  font-weight: 300; letter-spacing: -0.01em;
-}
-
-/* ── TEAM ── */
-.team-section { background: var(--off-white); padding: 100px 80px; }
-.team-header {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 60px; margin-bottom: 64px; align-items: end;
-}
-.team-badges { display: flex; flex-wrap: wrap; gap: 10px; align-self: end; }
-.team-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--white); border: 1px solid var(--gray-100);
-  border-radius: 100px; padding: 8px 16px;
-  font-family: var(--font-body); font-size: 13px; font-weight: 500;
-  color: var(--gray-700); box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  letter-spacing: -0.01em;
-}
-.team-badge-dot { width:8px;height:8px;background:var(--blue);border-radius:50%;flex-shrink:0; }
-.team-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-.team-card {
-  background: var(--white); border-radius: 20px; padding: 32px 28px;
-  border: 1px solid var(--gray-100); transition: all var(--transition);
-  position: relative; overflow: hidden;
-}
-.team-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: var(--blue); transform: scaleX(0);
-  transition: transform var(--transition); transform-origin: left;
-}
-.team-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(44,117,255,0.1);
-  border-color: var(--blue-mid);
-}
-.team-card:hover::before { transform: scaleX(1); }
-.team-role {
-  font-family: var(--font-display); font-size: 10px; font-weight: 800;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--blue); margin-bottom: 12px;
-}
-.team-name {
-  font-family: var(--font-display); font-size: 20px; font-weight: 900;
-  color: var(--dark); margin-bottom: 4px; letter-spacing: -0.03em;
-}
-.team-name-en {
-  font-family: var(--font-body); font-size: 13px; color: var(--gray-300);
-  font-weight: 300; margin-bottom: 8px;
-}
-.team-position {
-  font-family: var(--font-display); font-size: 13px; font-weight: 800;
-  color: var(--gray-700); margin-bottom: 16px; letter-spacing: -0.02em;
-}
-.team-desc {
-  font-family: var(--font-body); font-size: 13px; color: var(--gray-500);
-  line-height: 1.8; border-top: 1px solid var(--gray-50);
-  padding-top: 16px; font-weight: 300; letter-spacing: -0.01em;
-}
-.team-desc p { margin-bottom: 4px; }
-
-/* ── PROBLEM ── */
-.problem-section { padding: 100px 80px; }
-.lab-evolution {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  gap: 0; margin-top: 60px; position: relative;
-}
-.lab-evolution::before {
-  content: ''; position: absolute; top: 70px; left: 12%; right: 0;
-  height: 3px; background: linear-gradient(90deg, var(--gray-100), var(--blue)); z-index: 0;
-}
-.evolution-step { padding: 0 20px; position: relative; z-index: 1; }
-.evolution-step:first-child { padding-left: 0; }
-.evolution-step:last-child { padding-right: 0; }
-.evolution-num {
-  width: 48px; height: 48px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-size: 13px; font-weight: 900;
-  margin-bottom: 20px; background: var(--gray-50); color: var(--gray-300);
-  border: 2px solid var(--gray-100); transition: all var(--transition);
-  letter-spacing: -0.02em;
-}
-.evolution-step.active .evolution-num {
-  background: var(--blue); color: var(--white); border-color: var(--blue);
-  box-shadow: 0 0 0 6px rgba(44,117,255,0.15);
-}
-.evolution-label {
-  font-family: var(--font-display); font-size: 22px; font-weight: 900;
-  color: var(--gray-300); letter-spacing: -0.03em; margin-bottom: 8px;
-}
-.evolution-step.active .evolution-label { color: var(--blue); }
-.evolution-sublabel {
-  font-family: var(--font-body); font-size: 12px; font-weight: 700;
-  color: var(--gray-300); margin-bottom: 16px; letter-spacing: -0.01em;
-}
-.evolution-step.active .evolution-sublabel { color: var(--gray-500); }
-.evolution-items { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-.evolution-items li {
-  font-family: var(--font-body); font-size: 13px; color: var(--gray-300);
-  padding: 8px 12px; background: var(--gray-50); border-radius: 8px;
-  line-height: 1.5; font-weight: 300; letter-spacing: -0.01em; word-break: keep-all;
-}
-.evolution-step.active .evolution-items li { color: var(--gray-700); background: var(--blue-pale); }
-.evolution-items li.highlight {
-  color: var(--blue) !important; background: rgba(44,117,255,0.08) !important; font-weight: 600;
-}
-
-/* ── TAT ── */
-.tat-section {
-  background: linear-gradient(135deg, var(--dark) 0%, #0F2348 100%);
-  padding: 100px 80px; color: var(--white); position: relative; overflow: hidden;
-}
-.tat-section::before {
-  content: ''; position: absolute; top: -150px; right: -150px;
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(44,117,255,0.15) 0%, transparent 70%);
-}
-.tat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; position: relative; z-index: 1; }
-.tat-left .section-label { color: var(--blue-light); }
-.tat-left .section-title { color: var(--white); }
-.tat-left .section-desc { color: rgba(255,255,255,0.6); }
-.tat-definition {
-  background: rgba(44,117,255,0.12); border: 1px solid rgba(44,117,255,0.25);
-  border-radius: 16px; padding: 20px 24px; margin-bottom: 32px;
-}
-.tat-definition p {
-  font-family: var(--font-body); font-size: 14px; color: rgba(255,255,255,0.75);
-  line-height: 1.85; font-weight: 300; letter-spacing: -0.01em; word-break: keep-all;
-}
-.tat-definition strong { color: var(--blue-light); font-weight: 700; }
-.tat-effects { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.tat-effect {
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 14px; padding: 20px; transition: all var(--transition);
-}
-.tat-effect:hover { background: rgba(44,117,255,0.1); border-color: rgba(44,117,255,0.3); }
-.tat-effect-icon { font-size: 20px; margin-bottom: 10px; }
-.tat-effect-title {
-  font-family: var(--font-display); font-size: 13px; font-weight: 800;
-  color: var(--white); margin-bottom: 8px; letter-spacing: -0.02em;
-}
-.tat-effect-items {
-  font-family: var(--font-body); font-size: 12px; color: rgba(255,255,255,0.5);
-  line-height: 1.7; font-weight: 300; letter-spacing: -0.01em;
-}
-.tat-chart {
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px; padding: 32px;
-}
-.tat-chart-title {
-  font-family: var(--font-display); font-size: 11px; font-weight: 800;
-  color: rgba(255,255,255,0.5); letter-spacing: 0.08em;
-  text-transform: uppercase; margin-bottom: 24px;
-}
-.chart-comparison { display: flex; flex-direction: column; gap: 20px; }
-.chart-row { display: flex; flex-direction: column; gap: 6px; }
-.chart-row-label { display: flex; justify-content: space-between; font-size: 13px; }
-.chart-row-label .name {
-  font-family: var(--font-body); color: rgba(255,255,255,0.7);
-  font-weight: 500; letter-spacing: -0.01em;
-}
-.chart-row-label .val {
-  font-family: var(--font-display); color: rgba(255,255,255,0.4); font-weight: 700;
-}
-.chart-bar-bg { height: 10px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
-.chart-bar-fill {
-  height: 100%; border-radius: 100px;
-  background: linear-gradient(90deg, var(--blue), var(--blue-light));
-  width: 0; transition: width 1.5s ease-out; /* ⑦ animation→transition으로 변경 */
-}
-.chart-insight {
-  background: rgba(44,117,255,0.1); border: 1px solid rgba(44,117,255,0.2);
-  border-radius: 12px; padding: 16px 20px;
-  font-family: var(--font-body); font-size: 13px; color: rgba(255,255,255,0.7);
-  line-height: 1.75; margin-top: 20px; font-weight: 300;
-  letter-spacing: -0.01em; word-break: keep-all;
-}
-.chart-insight strong {
-  font-family: var(--font-display); color: var(--blue-light); font-weight: 800;
-}
-
-/* ── PRODUCT ── */
-.product-section { padding: 100px 80px; background: var(--off-white); }
-.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-.product-features { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
-.feature-item {
-  display: flex; gap: 20px; align-items: flex-start; padding: 20px;
-  background: var(--white); border-radius: 14px;
-  border: 1px solid var(--gray-100); transition: all var(--transition); cursor: default;
-}
-.feature-item:hover {
-  border-color: var(--blue-mid); box-shadow: 0 8px 24px rgba(44,117,255,0.08);
-  transform: translateX(4px);
-}
-.feature-icon {
-  width: 44px; height: 44px; background: var(--blue-pale);
-  border-radius: 12px; display: flex; align-items: center;
-  justify-content: center; font-size: 20px; flex-shrink: 0;
-}
-.feature-text h4 {
-  font-family: var(--font-display); font-size: 15px; font-weight: 800;
-  color: var(--dark); margin-bottom: 6px; letter-spacing: -0.03em;
-}
-.feature-text p {
-  font-family: var(--font-body); font-size: 13px; color: var(--gray-500);
-  line-height: 1.8; font-weight: 300; letter-spacing: -0.01em; word-break: keep-all;
-}
-.product-screen {
-  background: var(--dark); border-radius: 24px; padding: 32px;
-  position: sticky; top: 80px;
-  box-shadow: 0 32px 64px rgba(0,0,0,0.2);
-}
-.screen-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-.screen-dots { display: flex; gap: 6px; }
-.screen-dot { width: 10px; height: 10px; border-radius: 50%; }
-.screen-dot:nth-child(1){background:#FF5F57}
-.screen-dot:nth-child(2){background:#FEBC2E}
-.screen-dot:nth-child(3){background:#28C840}
-.screen-title {
-  font-family: var(--font-display); font-size: 11px; font-weight: 800;
-  color: rgba(255,255,255,0.3); letter-spacing: 0.05em;
-}
-.screen-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
-.stat-mini {
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px; padding: 14px; text-align: center;
-}
-.stat-mini-val {
-  font-family: var(--font-display); font-size: 22px; font-weight: 900;
-  color: var(--white); letter-spacing: -0.04em;
-}
-.stat-mini-val.blue { color: var(--blue-light); }
-.stat-mini-label {
-  font-family: var(--font-body); font-size: 10px;
-  color: rgba(255,255,255,0.4); margin-top: 2px; font-weight: 300;
-}
-.screen-flow {
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 12px; padding: 16px; margin-bottom: 16px;
-}
-.flow-label {
-  font-family: var(--font-display); font-size: 10px; font-weight: 800;
-  color: rgba(255,255,255,0.3); letter-spacing: 0.1em;
-  text-transform: uppercase; margin-bottom: 12px;
-}
-.flow-steps { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-.flow-step {
-  font-family: var(--font-body); font-size: 10px; font-weight: 500;
-  padding: 5px 10px; border-radius: 6px;
-  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5);
-  letter-spacing: -0.01em;
-}
-.flow-step.active { background: var(--blue); color: var(--white); }
-.flow-arrow { color: rgba(255,255,255,0.2); font-size: 12px; }
-.algo-selector { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.algo-tag {
-  font-family: var(--font-display); font-size: 11px; font-weight: 800;
-  padding: 6px 12px; border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);
-  cursor: pointer; transition: all var(--transition); letter-spacing: 0.01em;
-}
-.algo-tag.active { background: var(--blue); border-color: var(--blue); color: var(--white); }
-
-/* ── COMPARISON ── */
-.comparison-section {
-  background: linear-gradient(135deg, var(--dark) 0%, #0F2348 100%);
-  padding: 100px 80px;
-  color: var(--white);
-  position: relative;
-  overflow: hidden;
-}
-.comparison-section::before {
-  content: ''; position: absolute; top: -150px; right: -150px;
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(44,117,255,0.15) 0%, transparent 70%);
-  pointer-events: none;
-}
-.comparison-section .section-title { color: var(--white); }
-.comparison-section .section-desc { color: rgba(255,255,255,0.6); }
-.comparison-section .section-label { color: var(--blue-light); }
-.comparison-section > div, .comparison-section > table { position: relative; z-index: 1; }
-
-.comparison-table {
-  width: 100%; border-collapse: collapse; margin-top: 48px;
-  border-radius: 20px; overflow: hidden;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.2);
-  background: var(--white);
-}
-.comparison-table th {
-  padding: 20px 28px; text-align: left;
-  font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: -0.01em;
-}
-.comparison-table th:first-child { background: var(--gray-50); color: var(--gray-500); }
-.comparison-table th:nth-child(2) { background: var(--gray-100); color: var(--gray-500); text-align: center; }
-.comparison-table th:nth-child(3) { background: var(--blue); color: var(--white); text-align: center; }
-.comparison-table td {
-  padding: 18px 28px; font-family: var(--font-body); font-size: 13px;
-  border-bottom: 1px solid var(--gray-50); vertical-align: middle;
-  font-weight: 500; letter-spacing: -0.01em;
-}
-.comparison-table td:first-child {
-  background: var(--gray-50); color: var(--gray-700);
-  font-family: var(--font-display); font-weight: 700; font-size: 13px;
-}
-.comparison-table td:nth-child(2) { background: var(--white); color: var(--gray-500); text-align: center; }
-.comparison-table td:nth-child(3) { background: var(--blue-pale); color: var(--blue-dark); text-align: center; font-weight: 700; }
-.check{color:#22C55E;font-size:18px} .cross{color:var(--gray-300);font-size:18px} .half{color:#F59E0B;font-size:18px}
-
-/* ── CONTACT ── */
-.contact-section {
-  background: var(--blue); padding: 100px 80px;
-  text-align: center; position: relative; overflow: hidden;
-}
-.contact-section::before {
-  content: ''; position: absolute; top: -100px; left: -100px;
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-}
-.contact-title {
-  font-family: var(--font-display); font-size: clamp(30px,3.2vw,48px);
-  font-weight: 900; color: var(--white); letter-spacing: -0.04em;
-  margin-bottom: 16px; position: relative; z-index: 1; word-break: keep-all;
-}
-.contact-desc {
-  font-family: var(--font-body); font-size: 17px; color: rgba(255,255,255,0.75);
-  margin-bottom: 40px; font-weight: 300; position: relative; z-index: 1;
-  letter-spacing: -0.01em; word-break: keep-all;
-}
-.contact-links {
-  display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+/* HERO SCREENSHOT */
+.hero-screenshot-wrap {
+  position: relative; max-width: 1100px; margin: 0 auto;
+}
+.hero-screenshot-wrap::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+  background: linear-gradient(transparent, white); pointer-events: none; z-index: 2;
+}
+.hero-screenshot {
+  border-radius: 16px 16px 0 0; overflow: hidden;
+  box-shadow: 0 -3px 0 0 var(--blue), 0 30px 80px rgba(10,22,40,0.15), 0 0 0 1px var(--gray-100);
   position: relative; z-index: 1;
 }
-.contact-link {
-  display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px;
-  border-radius: 12px; font-family: var(--font-display); font-size: 14px;
-  font-weight: 800; text-decoration: none; transition: all var(--transition);
-  letter-spacing: -0.01em;
-}
-.contact-link.white {
-  background: var(--white); color: var(--blue); box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-}
-.contact-link.white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
-.contact-link.outline { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.4); }
-.contact-link.outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); }
 
-/* ── FOOTER ── */
-footer {
-  background: var(--dark); padding: 48px 80px;
+/* DASHBOARD MOCKUP */
+.dash { background: #0B1426; font-family: var(--font); font-size: 14px; }
+.dash-top {
+  background: #0F1E37; border-bottom: 1px solid rgba(255,255,255,0.06);
+  height: 44px; padding: 0 20px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.footer-logo {
-  font-family: var(--font-display); font-size: 20px; font-weight: 900;
-  color: var(--white); letter-spacing: -0.03em;
+.dash-brand-area { display: flex; align-items: center; gap: 10px; }
+.dash-badge { width: 26px; height: 26px; background: var(--blue); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 15px; }
+.dash-name { color: white; font-weight: 700; font-size: 15px; }
+.dash-live { display: flex; align-items: center; gap: 5px; color: #4ADE80; font-size: 12px; font-weight: 700; }
+.live-dot { width: 5px; height: 5px; background: #4ADE80; border-radius: 50%; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.dash-loc { font-size: 13px; color: rgba(255,255,255,0.4); }
+.dash-body { display: flex; height: 360px; }
+.dash-side {
+  width: 148px; background: #0F1E37; border-right: 1px solid rgba(255,255,255,0.05);
+  padding: 10px 0; flex-shrink: 0;
 }
+.dash-nav { display: flex; align-items: center; gap: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.4); cursor: default; }
+.dash-nav.on { color: white; background: rgba(44,117,255,0.14); border-right: 2px solid var(--blue); }
+.dash-alert { margin: 12px 10px 0; padding: 7px; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); border-radius: 6px; }
+.dash-alert-label { font-size: 10px; color: rgba(255,255,255,0.25); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
+.dash-alert-text { font-size: 12px; color: #F87171; font-weight: 600; }
+.dash-main { flex: 1; padding: 14px; overflow: hidden; }
+.dash-kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 10px; }
+.dash-kpi { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 10px 12px; }
+.dash-kpi-label { font-size: 11px; color: rgba(255,255,255,0.35); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 5px; }
+.dash-kpi-val { font-size: 24px; font-weight: 800; color: white; letter-spacing: -0.03em; line-height: 1; }
+.dash-kpi-val.c-blue { color: #5C96FF; }
+.dash-kpi-val.c-green { color: #4ADE80; }
+.dash-kpi-val.c-yellow { color: #FBBF24; }
+.dash-kpi-sub { font-size: 11px; margin-top: 4px; font-weight: 600; }
+.pos { color: #4ADE80; } .neg { color: #F87171; }
+.dash-charts { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-bottom: 8px; }
+.dash-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; }
+.dash-card-title { font-size: 11px; color: rgba(255,255,255,0.35); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
+.sparkline { display: flex; align-items: flex-end; gap: 2px; height: 44px; }
+.sp { flex: 1; border-radius: 2px 2px 0 0; background: rgba(44,117,255,0.3); }
+.sp.hi { background: rgba(44,117,255,0.8); }
+.util-rows { display: flex; flex-direction: column; gap: 7px; }
+.util-row-top { display: flex; justify-content: space-between; margin-bottom: 3px; }
+.util-name { font-size: 11px; color: rgba(255,255,255,0.45); }
+.util-val { font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 700; }
+.util-bg { height: 4px; background: rgba(255,255,255,0.07); border-radius: 100px; overflow: hidden; }
+.util-fill { height: 100%; border-radius: 100px; background: var(--blue); }
+.dash-tbl { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; }
+.tbl-head, .tbl-row { display: grid; grid-template-columns: 56px 90px 70px 70px 80px 50px; gap: 4px; }
+.tbl-head { margin-bottom: 5px; }
+.th { font-size: 10px; color: rgba(255,255,255,0.25); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.tbl-row { padding: 5px 0; border-top: 1px solid rgba(255,255,255,0.04); align-items: center; }
+.td { font-size: 11px; color: rgba(255,255,255,0.55); }
+.badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+.b-proc { background: rgba(44,117,255,0.2); color: #5C96FF; }
+.b-done { background: rgba(74,222,128,0.15); color: #4ADE80; }
+.b-delay { background: rgba(248,113,113,0.15); color: #F87171; }
+.b-q { background: rgba(251,191,36,0.15); color: #FBBF24; }
+
+/* PROOF STRIP */
+.proof-strip {
+  background: var(--gray-50); border-top: 1px solid var(--gray-100); border-bottom: 1px solid var(--gray-100);
+  padding: 40px 60px; display: flex; align-items: center; justify-content: center; gap: 64px; flex-wrap: wrap;
+}
+.proof-stat { text-align: center; }
+.proof-val { font-size: 42px; font-weight: 900; color: var(--dark); letter-spacing: -0.04em; line-height: 1; margin-bottom: 6px; }
+.proof-val em { color: var(--blue); font-style: normal; }
+.proof-lbl { font-size: 16px; color: var(--gray-500); font-weight: 500; }
+.proof-div { width: 1px; height: 52px; background: var(--gray-200); }
+
+/* SECTIONS */
+section { scroll-margin-top: 64px; }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); margin-bottom: 14px; }
+.sec-title { font-size: clamp(32px, 3.4vw, 48px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.2; color: var(--dark); margin-bottom: 18px; }
+.sec-title .accent { color: var(--blue); }
+.sec-desc { font-size: 19px; line-height: 1.8; color: var(--gray-500); font-weight: 400; max-width: 540px; }
+
+/* FEATURES GRID */
+.features-section { padding: 120px 60px; text-align: center; }
+.features-section .sec-desc { margin: 0 auto 64px; }
+.feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; text-align: left; }
+.feat-card { padding: 32px; border: 1.5px solid var(--gray-100); border-radius: 16px; transition: all var(--ease); }
+.feat-card:hover { border-color: rgba(44,117,255,0.4); box-shadow: 0 12px 40px rgba(44,117,255,0.08); transform: translateY(-4px); }
+.feat-icon { width: 48px; height: 48px; background: var(--blue-pale); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 20px; }
+.feat-card h3 { font-size: 19px; font-weight: 800; color: var(--dark); letter-spacing: -0.02em; margin-bottom: 10px; }
+.feat-card p { font-size: 16px; line-height: 1.75; color: var(--gray-500); }
+
+/* FEATURE ROW */
+.feat-row { padding: 100px 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.feat-row.alt { background: var(--gray-50); }
+.feat-row.alt .feat-row-vis { order: -1; }
+.feat-row-vis { border-radius: 20px; overflow: hidden; box-shadow: 0 24px 64px rgba(10,22,40,0.12); }
+.feat-pts { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+.feat-pt { display: flex; gap: 14px; align-items: flex-start; }
+.feat-pt-dot { width: 8px; height: 8px; background: var(--blue); border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
+.feat-pt strong { display: block; font-size: 17px; font-weight: 700; color: var(--dark); margin-bottom: 3px; }
+.feat-pt span { font-size: 16px; color: var(--gray-500); line-height: 1.65; }
+
+/* SIMULATION VISUAL inside feat-row */
+.sim-visual { background: #0B1426; padding: 28px; }
+.sim-title { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.35); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 20px; }
+.sim-bars { display: flex; flex-direction: column; gap: 14px; }
+.sim-bar-row {}
+.sim-bar-top { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.sim-bar-name { font-size: 15px; color: rgba(255,255,255,0.65); font-weight: 500; }
+.sim-bar-val { font-size: 15px; color: rgba(255,255,255,0.45); font-weight: 600; }
+.sim-bar-bg { height: 9px; background: rgba(255,255,255,0.07); border-radius: 100px; overflow: hidden; }
+.sim-bar-fill { height: 100%; border-radius: 100px; }
+.sim-insight { background: rgba(44,117,255,0.1); border: 1px solid rgba(44,117,255,0.25); border-radius: 10px; padding: 14px 16px; margin-top: 20px; font-size: 15px; color: rgba(255,255,255,0.65); line-height: 1.7; }
+.sim-insight strong { color: #5C96FF; font-weight: 800; }
+
+/* ALGO SECTION */
+.algo-section { background: var(--dark); padding: 100px 60px; position: relative; overflow: hidden; }
+.algo-section::before {
+  content: ''; position: absolute; top: -200px; right: -150px; width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(44,117,255,0.12) 0%, transparent 65%); pointer-events: none;
+}
+.algo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; position: relative; z-index: 1; }
+.algo-grid .eyebrow { color: #5C96FF; }
+.algo-grid .sec-title { color: white; }
+.algo-grid .sec-desc { color: rgba(255,255,255,0.55); margin-bottom: 36px; }
+.algo-cards { display: flex; flex-direction: column; gap: 10px; }
+.algo-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 16px 18px;
+  display: flex; align-items: center; gap: 14px; transition: all var(--ease);
+}
+.algo-card.best { background: rgba(44,117,255,0.1); border-color: rgba(44,117,255,0.3); }
+.algo-card-tag { font-size: 11px; font-weight: 800; letter-spacing: 0.05em; padding: 4px 9px; border-radius: 6px; flex-shrink: 0; white-space: nowrap; }
+.algo-card.best .algo-card-tag { background: var(--blue); color: white; }
+.algo-card:not(.best) .algo-card-tag { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.35); }
+.algo-card-info { flex: 1; }
+.algo-card-name { font-size: 16px; font-weight: 700; color: white; margin-bottom: 3px; }
+.algo-card-sub { font-size: 13px; color: rgba(255,255,255,0.35); }
+.algo-card.best .algo-card-sub { color: rgba(255,255,255,0.5); }
+.algo-card-tat { text-align: right; }
+.algo-card-tat-val { font-size: 19px; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: -0.02em; }
+.algo-card.best .algo-card-tat-val { color: #4ADE80; }
+.algo-card-tat-lbl { font-size: 11px; color: rgba(255,255,255,0.25); }
+
+/* CTA */
+.cta-section { padding: 120px 60px; text-align: center; }
+.cta-section .sec-title { max-width: 640px; margin: 0 auto 16px; }
+.cta-section .sec-desc { max-width: 680px; margin: 0 auto 40px; white-space: nowrap; }
+.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-contact { background: var(--blue); color: white; padding: 15px 32px; border-radius: 10px; font-size: 17px; font-weight: 700; text-decoration: none; transition: all var(--ease); box-shadow: 0 4px 20px rgba(44,117,255,0.3); }
+.btn-contact:hover { background: var(--blue-dark); transform: translateY(-2px); }
+.btn-contact-out { background: transparent; color: var(--dark); padding: 15px 32px; border-radius: 10px; font-size: 17px; font-weight: 700; text-decoration: none; border: 1.5px solid var(--gray-200); transition: all var(--ease); }
+.btn-contact-out:hover { border-color: var(--dark); }
+
+/* FOOTER */
+footer { background: var(--dark); padding: 40px 60px; display: flex; align-items: center; justify-content: space-between; }
+.footer-logo { font-size: 20px; font-weight: 800; color: white; letter-spacing: -0.03em; }
 .footer-logo span { color: var(--blue); }
-.footer-copy {
-  font-family: var(--font-body); font-size: 13px;
-  color: rgba(255,255,255,0.3); font-weight: 300; letter-spacing: -0.01em;
-}
+.footer-copy { font-size: 15px; color: rgba(255,255,255,0.3); }
 
-/* ── ANIMATIONS ── */
-.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+/* ANIM */
+.fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
-.section-divider { width: 48px; height: 3px; background: var(--blue); border-radius: 100px; margin-bottom: 20px; }
 
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media (max-width: 1024px) {
   nav { padding: 0 32px; }
-  section, .vision-section, .team-section, .tat-section,
-  .product-section, .comparison-section, .contact-section { padding: 72px 40px; }
-  .hero { grid-template-columns: 1fr; }
-  .hero-visual { min-height: 60vh; }
-  .hero-content { padding: 40px; }
-  .vision-grid, .product-grid, .tat-grid { grid-template-columns: 1fr; gap: 40px; }
-  .team-grid { grid-template-columns: repeat(2,1fr); }
-  .team-header { grid-template-columns: 1fr; }
-  .lab-evolution { grid-template-columns: repeat(2,1fr); }
-  .lab-evolution::before { display: none; }
-  footer { flex-direction: column; gap: 16px; text-align: center; }
   .nav-links { display: none; }
+  .hero { padding: 72px 32px 0; }
+  .proof-strip { padding: 32px; gap: 32px; }
+  .proof-div { display: none; }
+  .features-section { padding: 80px 40px; }
+  .feat-grid { grid-template-columns: repeat(2,1fr); }
+  .feat-row { padding: 80px 40px; grid-template-columns: 1fr; gap: 40px; }
+  .feat-row.alt .feat-row-vis { order: 0; }
+  .algo-section { padding: 80px 40px; }
+  .algo-grid { grid-template-columns: 1fr; gap: 48px; }
+  .cta-section { padding: 80px 40px; }
 }
 @media (max-width: 640px) {
   nav { padding: 0 20px; }
-  section, .vision-section, .team-section, .tat-section,
-  .product-section, .comparison-section, .contact-section { padding: 60px 24px; }
-  .hero-content { padding: 24px; }
-  .team-grid { grid-template-columns: 1fr; }
-  .tat-effects { grid-template-columns: 1fr; }
-  .screen-stats { grid-template-columns: repeat(3,1fr); }
-  .lab-evolution { grid-template-columns: 1fr; }
+  .hero { padding: 56px 20px 0; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .features-section, .cta-section, .algo-section { padding: 60px 20px; }
+  .feat-row { padding: 60px 20px; }
+  footer { flex-direction: column; gap: 12px; text-align: center; padding: 32px 20px; }
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#top" class="nav-logo">Rond<span>Health</span></a>
+  <a href="#top" class="nav-logo">ROND<span>Health</span></a>
   <ul class="nav-links">
-    <li><a href="#vision"><span class="lang-ko">비전 & 미션</span><span class="lang-en">Vision & Mission</span></a></li>
-    <li><a href="#team"><span class="lang-ko">팀</span><span class="lang-en">Team</span></a></li>
-    <li><a href="#problem"><span class="lang-ko">문제 & 기회</span><span class="lang-en">Problem & Opportunity</span></a></li>
-    <li><a href="#product"><span class="lang-ko">제품</span><span class="lang-en">Product</span></a></li>
+    <li><a href="#features"><span class="lang-ko">기능</span><span class="lang-en">Features</span></a></li>
+    <li><a href="#algorithm"><span class="lang-ko">알고리즘</span><span class="lang-en">Algorithm</span></a></li>
     <li><a href="#contact"><span class="lang-ko">문의</span><span class="lang-en">Contact</span></a></li>
   </ul>
   <div class="nav-right">
@@ -774,388 +313,590 @@ footer {
 </nav>
 
 <div id="top"></div>
-<section class="hero" style="padding:0;">
-  <div class="hero-content">
-    <div class="hero-badge">
-      <span class="lang-ko">Investor Relations 2026</span>
-      <span class="lang-en">Investor Relations 2026</span>
-    </div>
-    <h1 class="hero-title">
-      <span class="lang-ko">모든 의료 의사결정을<br><span class="accent">예측 가능하게</span> 한다</span>
-      <span class="lang-en">Making Every Medical<br>Decision <span class="accent">Predictable</span></span>
-    </h1>
-    <p class="hero-desc">
-      <span class="lang-ko">세계 최초 임상 검사실 의사결정을 위한 디지털트윈 시뮬레이터. 검사실 운영의 자동화를 넘어, 진정한 최적화를 실현합니다.</span>
-      <span class="lang-en">World's first digital twin simulator for clinical lab decisions. Beyond automation — true optimization of laboratory operations.</span>
-    </p>
-    <div class="hero-cta">
-      <a href="#product" class="btn-primary"><span class="lang-ko">제품 소개 보기</span><span class="lang-en">View Product</span> →</a>
-      <a href="#contact" class="btn-secondary"><span class="lang-ko">투자 문의</span><span class="lang-en">Investor Inquiry</span></a>
-    </div>
-  </div>
-  <div class="hero-visual">
-    <div class="lab-viz">
-      <div class="lab-card">
-        <div class="lab-card-header">
-          <span class="lab-card-title">SIMULATION STATUS</span>
-          <span class="lab-card-status"><span class="status-dot"></span>LIVE</span>
-        </div>
-        <div class="lab-metric">
-          <span class="lab-metric-value">23.4</span>
-          <span class="lab-metric-unit">min</span>
-        </div>
-        <div class="lab-metric-label lang-ko">현재 평균 TAT</div>
-        <div class="lab-metric-label lang-en">Current Avg. TAT</div>
-        <div class="mini-bars">
-          <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
-          <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
-        </div>
-      </div>
-      <div class="lab-card">
-        <div class="lab-card-header">
-          <span class="lab-card-title lang-ko">최적화 알고리즘</span>
-          <span class="lab-card-title lang-en">OPTIMIZATION ALGO</span>
-          <span class="lab-card-status"><span class="status-dot"></span>ACTIVE</span>
-        </div>
-        <div class="algo-pills">
-          <span class="algo-pill active">CRITICAL_PATH</span>
-          <span class="algo-pill">GREEDY</span>
-          <span class="algo-pill">LOOK_AHEAD</span>
-        </div>
-      </div>
-      <div class="lab-card">
-        <div class="lab-card-header">
-          <span class="lab-card-title lang-ko">검체 현황</span>
-          <span class="lab-card-title lang-en">SPECIMEN STATUS</span>
-        </div>
-        <div style="display:flex;gap:16px;flex-wrap:wrap;">
-          <div>
-            <div style="font-family:'NanumSquareNeo',sans-serif;font-size:24px;font-weight:900;color:#fff;letter-spacing:-0.04em;">200</div>
-            <div style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;color:rgba(255,255,255,0.4);font-weight:300;" class="lang-ko">총 검체</div>
-            <div style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;color:rgba(255,255,255,0.4);font-weight:300;" class="lang-en">Total Samples</div>
-          </div>
-          <div>
-            <div style="font-family:'NanumSquareNeo',sans-serif;font-size:24px;font-weight:900;color:#4ADE80;letter-spacing:-0.04em;">124</div>
-            <div style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;color:rgba(255,255,255,0.4);font-weight:300;" class="lang-ko">완료</div>
-            <div style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;color:rgba(255,255,255,0.4);font-weight:300;" class="lang-en">Completed</div>
-          </div>
-          <div>
-            <div style="font-family:'NanumSquareNeo',sans-serif;font-size:24px;font-weight:900;color:#FBBF24;letter-spacing:-0.04em;">60</div>
-            <div style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;color:rgba(255,255,255,0.4);font-weight:300;" class="lang-ko">대기 중</div>
-            <div style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;color:rgba(255,255,255,0.4);font-weight:300;" class="lang-en">Queued</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="hero-tagline">
-      <span class="lang-ko">ROND LAB™ — 지능형 검사실 디지털트윈</span>
-      <span class="lang-en">ROND LAB™ — Intelligent Lab Digital Twin</span>
-    </p>
-  </div>
-</section>
 
-<section class="vision-section" id="vision">
-  <div class="vision-grid">
-    <div class="vision-left fade-up">
-      <div class="section-label lang-ko">비전 & 미션</div>
-      <div class="section-label lang-en">Vision & Mission</div>
-      <h2 class="section-title" style="color:var(--white);">
-        <span class="lang-ko">모든 의료 의사결정을<br><span class="accent">예측 가능하게</span> 한다</span>
-        <span class="lang-en">Making Every Medical<br>Decision <span class="accent">Predictable</span></span>
-      </h2>
-      <div class="vision-statement">
-        <span class="lang-ko">Rond Health는 병원 검사실의 운영을 데이터로 예측하고, 디지털트윈 시뮬레이션을 실제 임상가치로 전환합니다.</span>
-        <span class="lang-en">Rond Health uses data to predict laboratory operations and converts digital twin simulations into real clinical value.</span>
-      </div>
-    </div>
-    <div class="mission-cards fade-up">
-      <div class="mission-card">
-        <div class="mission-icon">🔗</div>
-        <div class="mission-text">
-          <h4 class="lang-ko">데이터 기반 의사결정 체계 구축</h4>
-          <h4 class="lang-en">Data-driven Decision Framework</h4>
-          <p class="lang-ko">경험이 아닌 데이터로 운영 판단을 내리는 검사실을 만듭니다.</p>
-          <p class="lang-en">Building laboratories that make operational decisions based on data, not experience alone.</p>
-        </div>
-      </div>
-      <div class="mission-card">
-        <div class="mission-icon">🔄</div>
-        <div class="mission-text">
-          <h4 class="lang-ko">디지털트윈 시뮬레이션을 실제 임상가치로 전환</h4>
-          <h4 class="lang-en">Turning Digital Twin Simulations into Clinical Value</h4>
-          <p class="lang-ko">시뮬레이션 결과가 실제 환자 치료 결과로 이어지도록 합니다.</p>
-          <p class="lang-en">Ensuring simulation results translate directly into improved patient outcomes.</p>
-        </div>
-      </div>
-      <div class="mission-card">
-        <div class="mission-icon">🏥</div>
-        <div class="mission-text">
-          <h4 class="lang-ko">병원 전반의 운영 효율성 표준화</h4>
-          <h4 class="lang-en">Standardizing Hospital Operational Efficiency</h4>
-          <p class="lang-ko">개별 병원을 넘어 의료 시스템 전반의 운영 표준을 높입니다.</p>
-          <p class="lang-en">Elevating operational standards across the entire healthcare system.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="problem-section" id="problem">
-  <div class="section-label lang-ko fade-up">문제 & 기회</div>
-  <div class="section-label lang-en fade-up">Problem & Opportunity</div>
-  <h2 class="section-title fade-up">
-    <span class="lang-ko">자동화의 시대를 넘어,<br><span class="accent">지능형 검사실</span>로: Lab 4.0</span>
-    <span class="lang-en">Beyond Automation Era,<br>to <span class="accent">Intelligent Lab</span>: Lab 4.0</span>
-  </h2>
-  <p class="section-desc fade-up">
-    <span class="lang-ko">Lab 3.0은 하드웨어를 모두 연결했을 뿐, 검사실의 복잡성을 완전히 제거하지 못합니다. 드러나지 않는 병목, 보이지 않는 TAT 관리, 사후 대응 중심 운영이 여전히 한계입니다.</span>
-    <span class="lang-en">Lab 3.0 connected all hardware, but failed to fully eliminate lab complexity. Hidden bottlenecks, invisible TAT management, and reactive operations remain the key limitations.</span>
+<!-- ── HERO ── -->
+<section class="hero">
+  <h1 class="hero-title">
+    <span class="lang-ko">검사실의 모든 의사결정을<br><span class="gradient">예측 가능하게</span></span>
+    <span class="lang-en">Every Lab Decision, <span class="gradient">Made Predictable</span></span>
+  </h1>
+  <p class="hero-desc">
+    <span class="lang-ko">세계 최초 임상 검사실 디지털트윈 시뮬레이터.<br>AI 알고리즘으로 TAT를 단축합니다.</span>
+    <span class="lang-en">World's first clinical lab digital twin simulator.<br>AI algorithms reduce your TAT.</span>
   </p>
-  <div class="lab-evolution fade-up">
-    <div class="evolution-step"><div class="evolution-num">1.0</div><div class="evolution-label">Lab 1.0</div><div class="evolution-sublabel lang-ko">수작업 중심</div><div class="evolution-sublabel lang-en">Manual-Centric</div><ul class="evolution-items"><li class="lang-ko">100% 수작업 공정</li><li class="lang-en">100% manual processes</li><li class="lang-ko">경험 기반 의사결정</li><li class="lang-en">Experience-based decisions</li><li class="lang-ko">낮은 확장성</li><li class="lang-en">Low scalability</li></ul></div>
-    <div class="evolution-step"><div class="evolution-num">2.0</div><div class="evolution-label">Lab 2.0</div><div class="evolution-sublabel lang-ko">부분 자동화</div><div class="evolution-sublabel lang-en">Partial Automation</div><ul class="evolution-items"><li class="lang-ko">개별 분석기 중심 운영</li><li class="lang-en">Individual analyzer-centric</li><li class="lang-ko">단절된 프로세스 구조</li><li class="lang-en">Disconnected processes</li><li class="lang-ko">제한된 운영 가시성</li><li class="lang-en">Limited operational visibility</li></ul></div>
-    <div class="evolution-step"><div class="evolution-num">3.0</div><div class="evolution-label">Lab 3.0</div><div class="evolution-sublabel lang-ko">완전 자동화</div><div class="evolution-sublabel lang-en">Full Automation</div><ul class="evolution-items"><li class="lang-ko">전 공정의 완전 자동화</li><li class="lang-en">Full process automation</li><li class="lang-ko">실시간 퍼포먼스 모니터링</li><li class="lang-en">Real-time performance monitoring</li><li class="lang-ko">문제 발생 이후 대응형 운영</li><li class="lang-en">Reactive operations post-incident</li></ul></div>
-    <div class="evolution-step active"><div class="evolution-num">4.0</div><div class="evolution-label">Lab 4.0</div><div class="evolution-sublabel lang-ko">디지털 트윈 최적화</div><div class="evolution-sublabel lang-en">Digital Twin Optimization</div><ul class="evolution-items"><li class="highlight lang-ko">실시간 디지털트윈 시뮬레이션</li><li class="highlight lang-en">Real-time digital twin simulation</li><li class="highlight lang-ko">데이터 기반 선제적 의사결정</li><li class="highlight lang-en">Data-driven proactive decisions</li><li class="highlight lang-ko">예측 기반 TAT 최적화</li><li class="highlight lang-en">Prediction-based TAT optimization</li></ul></div>
+  <div class="hero-cta">
+    <a href="#features" class="btn-outline"><span class="lang-ko">기능 살펴보기</span><span class="lang-en">Explore Features</span></a>
   </div>
-</section>
 
-<section class="tat-section" id="tat">
-  <div class="tat-grid">
-    <div class="tat-left fade-up">
-      <div class="section-label lang-ko">복극성 지표</div>
-      <div class="section-label lang-en">North Star Metric</div>
-      <h2 class="section-title">
-        <span class="lang-ko">예측가능한 <span class="accent">TAT</span><br>(Turnaround Time)</span>
-        <span class="lang-en">Predictable <span class="accent">TAT</span><br>(Turnaround Time)</span>
-      </h2>
-      <div class="tat-definition">
-        <p class="lang-ko"><strong>TAT (Turnaround Time)</strong>는 검체 접수부터 결과 보고까지 걸리는 시간입니다. 단순한 검사실 평가지표를 넘어, <strong>병원 전체 성과를 결정하는 핵심지표</strong>입니다.</p>
-        <p class="lang-en"><strong>TAT (Turnaround Time)</strong> is the time from specimen receipt to result reporting. Beyond a simple lab metric, it is the <strong>key performance indicator for entire hospital outcomes</strong>.</p>
-      </div>
-      <div class="tat-effects">
-        <div class="tat-effect"><div class="tat-effect-icon">❤️</div><div class="tat-effect-title lang-ko">임상적 효과</div><div class="tat-effect-title lang-en">Clinical Impact</div><div class="tat-effect-items lang-ko">치료 개시시간 단축<br>사망률 및 합병증 감소</div><div class="tat-effect-items lang-en">Faster treatment initiation<br>Reduced mortality & complications</div></div>
-        <div class="tat-effect"><div class="tat-effect-icon">🏥</div><div class="tat-effect-title lang-ko">운영적 효과</div><div class="tat-effect-title lang-en">Operational Impact</div><div class="tat-effect-items lang-ko">재원기간(LOS) 단축<br>병상 회전율 향상</div><div class="tat-effect-items lang-en">Reduced length of stay<br>Improved bed turnover</div></div>
-        <div class="tat-effect"><div class="tat-effect-icon">🔬</div><div class="tat-effect-title lang-ko">의사결정 효과</div><div class="tat-effect-title lang-en">Decision-Making Impact</div><div class="tat-effect-items lang-ko">불필요한 중복검사 감소<br>근거 기반 자원 배분</div><div class="tat-effect-items lang-en">Fewer redundant tests<br>Evidence-based resource allocation</div></div>
-        <div class="tat-effect"><div class="tat-effect-icon">💰</div><div class="tat-effect-title lang-ko">경제적 효과</div><div class="tat-effect-title lang-en">Economic Impact</div><div class="tat-effect-items lang-ko">검사 단가 절감<br>병원 운영 수익성 개선</div><div class="tat-effect-items lang-en">Reduced cost per test<br>Improved hospital profitability</div></div>
-      </div>
-    </div>
-    <div class="tat-chart fade-up" id="tatChart">
-      <div class="tat-chart-title lang-ko">TAT 개선 시뮬레이션 결과</div>
-      <div class="tat-chart-title lang-en">TAT Improvement Simulation</div>
-      <div class="chart-comparison">
-        <div class="chart-row"><div class="chart-row-label"><span class="name lang-ko">현재 평균 TAT</span><span class="name lang-en">Current Avg. TAT</span><span class="val">48 min</span></div><div class="chart-bar-bg"><div class="chart-bar-fill" data-w="95%" style="background:rgba(255,255,255,0.2);"></div></div></div>
-        <div class="chart-row"><div class="chart-row-label"><span class="name lang-ko">Lab 3.0 자동화 이후</span><span class="name lang-en">After Lab 3.0 Automation</span><span class="val">38 min</span></div><div class="chart-bar-bg"><div class="chart-bar-fill" data-w="75%"></div></div></div>
-        <div class="chart-row"><div class="chart-row-label"><span class="name lang-ko">Rond Lab™ 최적화 후</span><span class="name lang-en">After Rond Lab™ Optimization</span><span class="val">23 min</span></div><div class="chart-bar-bg"><div class="chart-bar-fill" data-w="46%" style="background:linear-gradient(90deg,#2C75FF,#4ADE80);"></div></div></div>
-      </div>
-      <div class="chart-insight">
-        <strong class="lang-ko">52% TAT 단축</strong><strong class="lang-en">52% TAT Reduction</strong>
-        <span class="lang-ko"> — 하드웨어 추가 없이 소프트웨어 최적화만으로 달성 가능한 개선 효과입니다.</span>
-        <span class="lang-en"> — Achievable through software optimization alone, without additional hardware.</span>
-      </div>
-      <div style="margin-top:28px;">
-        <div class="tat-chart-title lang-ko" style="margin-bottom:16px;">Lab 3.0 vs Lab 4.0 비교</div>
-        <div class="tat-chart-title lang-en" style="margin-bottom:16px;">Lab 3.0 vs Lab 4.0 Comparison</div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;">
-            <div style="font-family:'NanumSquareNeo',sans-serif;font-size:11px;font-weight:800;color:rgba(255,255,255,0.4);letter-spacing:.08em;margin-bottom:8px;">LAB 3.0</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:4px 10px;border-radius:6px;" class="lang-ko">장비 연결성</span>
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:4px 10px;border-radius:6px;" class="lang-ko">현재 상황 모니터링</span>
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:4px 10px;border-radius:6px;" class="lang-ko">사후 대응적 조정</span>
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:4px 10px;border-radius:6px;" class="lang-en">Device connectivity</span>
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:4px 10px;border-radius:6px;" class="lang-en">Status monitoring</span>
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:4px 10px;border-radius:6px;" class="lang-en">Reactive adjustments</span>
-            </div>
+  <!-- Dashboard Screenshot Mockup -->
+  <div class="hero-screenshot-wrap">
+    <div class="hero-screenshot">
+      <div class="dash">
+        <!-- Topbar -->
+        <div class="dash-top">
+          <div class="dash-brand-area">
+            <div class="dash-badge">R</div>
+            <span class="dash-name">ROND Health™</span>
+            <div class="dash-live"><div class="live-dot"></div>LIVE</div>
           </div>
-          <div style="background:rgba(44,117,255,0.12);border:1px solid rgba(44,117,255,0.3);border-radius:10px;padding:14px 16px;">
-            <div style="font-family:'NanumSquareNeo',sans-serif;font-size:11px;font-weight:800;color:#5C96FF;letter-spacing:.08em;margin-bottom:8px;">LAB 4.0 — ROND LAB™</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(44,117,255,0.3);color:#fff;padding:4px 10px;border-radius:6px;" class="lang-ko">실시간 시뮬레이션</span>
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(44,117,255,0.3);color:#fff;padding:4px 10px;border-radius:6px;" class="lang-ko">예측 기반 경로 최적화</span>
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(44,117,255,0.3);color:#fff;padding:4px 10px;border-radius:6px;" class="lang-ko">선제적 TAT 관리</span>
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(44,117,255,0.3);color:#fff;padding:4px 10px;border-radius:6px;" class="lang-en">Real-time simulation</span>
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(44,117,255,0.3);color:#fff;padding:4px 10px;border-radius:6px;" class="lang-en">Predictive path optimization</span>
-              <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:11px;background:rgba(44,117,255,0.3);color:#fff;padding:4px 10px;border-radius:6px;" class="lang-en">Proactive TAT management</span>
-            </div>
+          
+          <div style="display:flex;gap:12px;">
+            <span style="font-size:12px;color:rgba(255,255,255,0.25);font-weight:600;">KO &nbsp;|&nbsp; EN</span>
+            <span style="font-size:12px;color:rgba(255,255,255,0.25);font-weight:600;">☼ LIGHT</span>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="product-section" id="product">
-  <div class="product-grid">
-    <div class="fade-up">
-      <div class="section-label lang-ko">제품 소개</div>
-      <div class="section-label lang-en">Product</div>
-      <h2 class="section-title">
-        <span class="lang-ko">ROND Lab™<br><span class="accent">지능형 검사실</span>을 위한<br>디지털트윈 엔진</span>
-        <span class="lang-en">ROND Lab™<br>Digital Twin Engine for<br><span class="accent">Intelligent Laboratories</span></span>
-      </h2>
-      <p class="section-desc">
-        <span class="lang-ko">병원 검사실 구조를 드래그 앤 드롭으로 디지털트윈화하고, AI 최적화 알고리즘으로 TAT를 예측·최적화합니다.</span>
-        <span class="lang-en">Digitally twin your hospital lab layout via drag-and-drop, then predict and optimize TAT with AI optimization algorithms.</span>
-      </p>
-      <div class="product-features">
-        <div class="feature-item"><div class="feature-icon">🏗️</div><div class="feature-text"><h4 class="lang-ko">드래그 앤 드롭 디지털트윈 생성</h4><h4 class="lang-en">Drag-and-Drop Digital Twin Builder</h4><p class="lang-ko">복잡한 코딩 없이 검사실 레이아웃을 그대로 디지털트윈으로 구현합니다.</p><p class="lang-en">Replicate your lab layout as a digital twin without complex coding.</p></div></div>
-        <div class="feature-item"><div class="feature-icon">🔮</div><div class="feature-text"><h4 class="lang-ko">실시간 시뮬레이션 & 병목 시각화</h4><h4 class="lang-en">Real-time Simulation & Bottleneck Visualization</h4><p class="lang-ko">검체 흐름을 실시간으로 시뮬레이션하고 병목 구간을 즉시 파악합니다.</p><p class="lang-en">Simulate specimen flow in real-time and instantly identify bottlenecks.</p></div></div>
-        <div class="feature-item"><div class="feature-icon">🧠</div><div class="feature-text"><h4 class="lang-ko">지능형 최적화 알고리즘 선택</h4><h4 class="lang-en">Intelligent Optimization Algorithm Selection</h4><p class="lang-ko">GREEDY, LOOK_AHEAD, CRITICAL_PATH 중 목적에 맞는 알고리즘을 선택해 최적 경로를 계산합니다.</p><p class="lang-en">Choose from GREEDY, LOOK_AHEAD, or CRITICAL_PATH algorithms to compute optimal routing.</p></div></div>
-        <div class="feature-item"><div class="feature-icon">📊</div><div class="feature-text"><h4 class="lang-ko">데이터 기반 선제적 의사결정</h4><h4 class="lang-en">Data-Driven Proactive Decision Making</h4><p class="lang-ko">문제가 발생하기 전에 예측하고 선제적으로 대응하는 운영 인텔리전스를 제공합니다.</p><p class="lang-en">Provides operational intelligence that predicts and proactively addresses issues before they occur.</p></div></div>
-      </div>
-    </div>
-    <div class="product-screen fade-up">
-      <div class="screen-topbar"><div class="screen-dots"><div class="screen-dot"></div><div class="screen-dot"></div><div class="screen-dot"></div></div><div class="screen-title">ROND LAB™</div><div style="width:60px;"></div></div>
-      <div class="screen-stats">
-        <div class="stat-mini"><div class="stat-mini-val">200</div><div class="stat-mini-label lang-ko">총 검체</div><div class="stat-mini-label lang-en">Total</div></div>
-        <div class="stat-mini"><div class="stat-mini-val blue">124</div><div class="stat-mini-label lang-ko">완료</div><div class="stat-mini-label lang-en">Done</div></div>
-        <div class="stat-mini"><div class="stat-mini-val" style="color:#FBBF24;">60</div><div class="stat-mini-label lang-ko">대기</div><div class="stat-mini-label lang-en">Queue</div></div>
-      </div>
-      <div class="screen-flow">
-        <div class="flow-label lang-ko">검체 워크플로우</div><div class="flow-label lang-en">SPECIMEN WORKFLOW</div>
-        <div class="flow-steps">
-          <span class="flow-step lang-ko">채혈</span><span class="flow-step lang-en">Collect</span><span class="flow-arrow">›</span>
-          <span class="flow-step lang-ko">접수</span><span class="flow-step lang-en">Receive</span><span class="flow-arrow">›</span>
-          <span class="flow-step active lang-ko">원심분리</span><span class="flow-step active lang-en">Centrifuge</span><span class="flow-arrow">›</span>
-          <span class="flow-step lang-ko">검사</span><span class="flow-step lang-en">Analyze</span><span class="flow-arrow">›</span>
-          <span class="flow-step lang-ko">보고</span><span class="flow-step lang-en">Report</span>
+        <!-- Body -->
+        <div class="dash-body">
+          <!-- Sidebar -->
+          <div class="dash-side">
+            <div class="dash-nav on">⬡&nbsp; 대시보드</div>
+            <div class="dash-nav">◎&nbsp; 검체 추적</div>
+            <div class="dash-nav">⇌&nbsp; 워크플로우</div>
+            <div class="dash-nav">▶&nbsp; 시뮬레이션</div>
+            <div class="dash-alert">
+              <div class="dash-alert-label">알림</div>
+              <div class="dash-alert-text">⚠ 원심분리기 지연</div>
+            </div>
+          </div>
+          <!-- Main -->
+          <div class="dash-main">
+            <!-- KPIs -->
+            <div class="dash-kpis">
+              <div class="dash-kpi">
+                <div class="dash-kpi-label">Avg TAT</div>
+                <div class="dash-kpi-val c-blue">48.1<span style="font-size:13px;font-weight:400;opacity:0.55"> min</span></div>
+                <div class="dash-kpi-sub pos">▼ 52% vs Random</div>
+              </div>
+              <div class="dash-kpi">
+                <div class="dash-kpi-label">일일 검체</div>
+                <div class="dash-kpi-val">2,000</div>
+                <div class="dash-kpi-sub pos">▲ 3.2%</div>
+              </div>
+              <div class="dash-kpi">
+                <div class="dash-kpi-label">TAT Ratio</div>
+                <div class="dash-kpi-val c-green">37.72</div>
+                <div class="dash-kpi-sub pos">▼ vs 66.96 baseline</div>
+              </div>
+              <div class="dash-kpi">
+                <div class="dash-kpi-label">TAT 달성률</div>
+                <div class="dash-kpi-val c-yellow">55.5<span style="font-size:13px;font-weight:400;opacity:0.55">%</span></div>
+                <div class="dash-kpi-sub neg">▼ 31.8%</div>
+              </div>
+            </div>
+            <!-- Charts -->
+            <div class="dash-charts">
+              <div class="dash-card">
+                <div class="dash-card-title">TAT Trend · GREEDY Algorithm · 2,000 Samples</div>
+                <div class="sparkline">
+                  <div class="sp" style="height:55%"></div><div class="sp" style="height:70%"></div>
+                  <div class="sp hi" style="height:88%"></div><div class="sp" style="height:45%"></div>
+                  <div class="sp" style="height:78%"></div><div class="sp" style="height:62%"></div>
+                  <div class="sp hi" style="height:92%"></div><div class="sp" style="height:50%"></div>
+                  <div class="sp" style="height:73%"></div><div class="sp" style="height:58%"></div>
+                  <div class="sp" style="height:40%"></div><div class="sp hi" style="height:85%"></div>
+                  <div class="sp" style="height:66%"></div><div class="sp" style="height:48%"></div>
+                  <div class="sp" style="height:75%"></div><div class="sp hi" style="height:95%"></div>
+                  <div class="sp" style="height:52%"></div><div class="sp" style="height:68%"></div>
+                  <div class="sp" style="height:43%"></div><div class="sp hi" style="height:80%"></div>
+                  <div class="sp" style="height:60%"></div><div class="sp" style="height:71%"></div>
+                </div>
+              </div>
+              <div class="dash-card">
+                <div class="dash-card-title">장비 가동률</div>
+                <div class="util-rows">
+                  <div>
+                    <div class="util-row-top"><span class="util-name">ANLZ</span><span class="util-val">98%</span></div>
+                    <div class="util-bg"><div class="util-fill" style="width:98%"></div></div>
+                  </div>
+                  <div>
+                    <div class="util-row-top"><span class="util-name">CENT</span><span class="util-val">87%</span></div>
+                    <div class="util-bg"><div class="util-fill" style="width:87%;background:#FBBF24"></div></div>
+                  </div>
+                  <div>
+                    <div class="util-row-top"><span class="util-name">SORT</span><span class="util-val">100%</span></div>
+                    <div class="util-bg"><div class="util-fill" style="width:100%;background:#4ADE80"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Table -->
+            <div class="dash-tbl">
+              <div class="dash-card-title" style="margin-bottom:6px;">검체 현황 (실시간)</div>
+              <div class="tbl-head">
+                <div class="th">검체 ID</div><div class="th">현재 단계</div>
+                <div class="th">예상 TAT</div><div class="th">경과</div>
+                <div class="th">상태</div><div class="th">우선순위</div>
+              </div>
+              <div class="tbl-row">
+                <div class="td">S-0031</div><div class="td">원심분리</div>
+                <div class="td">48.1 min</div><div class="td">12 min</div>
+                <div class="td"><span class="badge b-proc">처리중</span></div><div class="td">HIGH</div>
+              </div>
+              <div class="tbl-row">
+                <div class="td">S-0032</div><div class="td">검사 대기</div>
+                <div class="td">48.1 min</div><div class="td">8 min</div>
+                <div class="td"><span class="badge b-q">대기</span></div><div class="td">MED</div>
+              </div>
+              <div class="tbl-row">
+                <div class="td">S-0029</div><div class="td">결과 보고</div>
+                <div class="td">47.8 min</div><div class="td">46 min</div>
+                <div class="td"><span class="badge b-done">완료</span></div><div class="td">LOW</div>
+              </div>
+              <div class="tbl-row">
+                <div class="td">S-0033</div><div class="td">접수</div>
+                <div class="td">48.2 min</div><div class="td">2 min</div>
+                <div class="td"><span class="badge b-proc">처리중</span></div><div class="td">HIGH</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:14px;">
-        <div class="flow-label lang-ko">최적화 알고리즘</div><div class="flow-label lang-en">OPTIMIZATION ALGORITHM</div>
-        <div class="algo-selector"><span class="algo-tag active">CRITICAL_PATH</span><span class="algo-tag">GREEDY</span><span class="algo-tag">LOOK_AHEAD</span></div>
-      </div>
-      <div style="background:rgba(44,117,255,0.12);border:1px solid rgba(44,117,255,0.25);border-radius:12px;padding:16px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <span style="font-family:'NanumSquareNeo',sans-serif;font-size:11px;font-weight:800;color:rgba(255,255,255,0.5);letter-spacing:.08em;">TAT FORECAST</span>
-          <span style="font-family:'NanumSquareNeo',sans-serif;font-size:10px;color:#4ADE80;font-weight:800;">▼ 52% vs baseline</span>
-        </div>
-        <div style="font-family:'NanumSquareNeo',sans-serif;font-size:32px;font-weight:900;color:#fff;letter-spacing:-0.04em;">23.4 <span style="font-family:'KoPubWorldDotum',sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,0.5);">min</span></div>
-        <div style="font-family:'KoPubWorldDotum',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;font-weight:300;" class="lang-ko">예측 기반 TAT 최적화 결과</div>
-        <div style="font-family:'KoPubWorldDotum',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;font-weight:300;" class="lang-en">Prediction-based TAT optimization result</div>
-      </div>
     </div>
   </div>
 </section>
 
-<section class="comparison-section" id="comparison">
-  <div class="fade-up">
-    <div class="section-label lang-ko">경쟁 우위</div>
-    <div class="section-label lang-en">Competitive Advantage</div>
-    <h2 class="section-title">
-      <span class="lang-ko">하드웨어의 한계를 넘어,<br><span class="accent">소프트웨어 최적화</span>의 시대</span>
-      <span class="lang-en">Beyond Hardware Limits,<br>The Era of <span class="accent">Software Optimization</span></span>
-    </h2>
-    <p class="section-desc">
-      <span class="lang-ko">기존 운영 로그 데이터의 90% 이상이 활용되지 않고 있습니다. Rond Lab™은 이 숨겨진 잠재력을 실제 가치로 전환합니다.</span>
-      <span class="lang-en">Over 90% of existing operational log data goes unused. Rond Lab™ converts this hidden potential into real value.</span>
-    </p>
+<!-- ── PROOF STRIP ── -->
+<div class="proof-strip fade-up">
+  <div class="proof-stat">
+    <div class="proof-val"><em>52</em>%</div>
+    <div class="proof-lbl lang-ko">TAT 단축 (Greedy/Critical_Path)</div>
+    <div class="proof-lbl lang-en">TAT Reduction (Greedy/Critical_Path)</div>
   </div>
-  <table class="comparison-table fade-up">
-    <thead>
-      <tr>
-        <th id="th1" class="lang-ko-th">비교 항목</th>
-        <th id="th2" class="lang-ko-th">기존 접근 (Lab 3.0)</th>
-        <th id="th3" class="lang-ko-th">Rond Lab™ (Lab 4.0)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td><span class="lang-ko">병목 감지</span><span class="lang-en">Bottleneck Detection</span></td><td><span class="cross">○</span> <span style="font-size:12px;" class="lang-ko">사후 감지</span><span style="font-size:12px;" class="lang-en">Reactive</span></td><td><span class="check">✓</span> <span style="font-size:12px;" class="lang-ko">실시간 선제 감지</span><span style="font-size:12px;" class="lang-en">Real-time proactive</span></td></tr>
-      <tr><td><span class="lang-ko">TAT 예측</span><span class="lang-en">TAT Prediction</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span> <span style="font-size:12px;" class="lang-ko">AI 기반 예측</span><span style="font-size:12px;" class="lang-en">AI-based prediction</span></td></tr>
-      <tr><td><span class="lang-ko">경로 최적화</span><span class="lang-en">Route Optimization</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span> <span style="font-size:12px;" class="lang-ko">다중 알고리즘</span><span style="font-size:12px;" class="lang-en">Multi-algorithm</span></td></tr>
-      <tr><td><span class="lang-ko">데이터 활용률</span><span class="lang-en">Data Utilization</span></td><td><span class="half">△</span> <span style="font-size:12px;" class="lang-ko">&lt;10% 활용</span><span style="font-size:12px;" class="lang-en">&lt;10% utilized</span></td><td><span class="check">✓</span> <span style="font-size:12px;" class="lang-ko">90%+ 활용</span><span style="font-size:12px;" class="lang-en">90%+ utilized</span></td></tr>
-      <tr><td><span class="lang-ko">시뮬레이션 기반 의사결정</span><span class="lang-en">Simulation-based Decisions</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span> <span style="font-size:12px;" class="lang-ko">디지털트윈 시나리오</span><span style="font-size:12px;" class="lang-en">Digital twin scenarios</span></td></tr>
-      <tr><td><span class="lang-ko">하드웨어 추가 필요</span><span class="lang-en">Additional Hardware Required</span></td><td><span class="check">✓</span> <span style="font-size:12px;" class="lang-ko">지속적 장비 투자 필요</span><span style="font-size:12px;" class="lang-en">Ongoing hardware investment</span></td><td><span class="cross" style="color:#4ADE80;">✗</span> <span style="font-size:12px;color:#22C55E;" class="lang-ko">소프트웨어만으로 개선</span><span style="font-size:12px;color:#22C55E;" class="lang-en">Software-only improvement</span></td></tr>
-    </tbody>
-  </table>
-</section>
+  <div class="proof-div"></div>
+  <div class="proof-stat">
+    <div class="proof-val">2,000</div>
+    <div class="proof-lbl lang-ko">시뮬레이션 검체 수</div>
+    <div class="proof-lbl lang-en">Simulated Samples</div>
+  </div>
+  <div class="proof-div"></div>
+  <div class="proof-stat">
+    <div class="proof-val"><em>48.1</em><span style="font-size:22px;font-weight:600"> min</span></div>
+    <div class="proof-lbl lang-ko">최적화 후 평균 TAT</div>
+    <div class="proof-lbl lang-en">Optimized Avg. TAT</div>
+  </div>
+  <div class="proof-div"></div>
+  <div class="proof-stat">
+    <div class="proof-val"><em>37.72</em></div>
+    <div class="proof-lbl lang-ko">TAT Ratio (Greedy)</div>
+    <div class="proof-lbl lang-en">TAT Ratio (Greedy)</div>
+  </div>
+</div>
 
-<section class="contact-section" id="contact">
-  <h2 class="contact-title">
-    <span class="lang-ko">검사실의 미래를<br>함께 만들어가세요</span>
-    <span class="lang-en">Build the Future of<br>Clinical Laboratories</span>
+<!-- ── FEATURES ── -->
+<section class="features-section" id="features">
+  <div class="eyebrow fade-up lang-ko">솔루션</div>
+  <div class="eyebrow fade-up lang-en" style="display:none">Solution</div>
+  <h2 class="sec-title fade-up" style="max-width:860px;margin:0 auto 20px;">
+    <span class="lang-ko">Lab 3.0에서 Lab 4.0으로<br><span class="accent">모니터링을 넘어 예측 기반 운영으로</span></span>
+    <span class="lang-en">From Lab 3.0 to Lab 4.0<br><span class="accent">Beyond Monitoring to Predictive Operations</span></span>
   </h2>
-  <p class="contact-desc">
-    <span class="lang-ko">투자 문의, 파트너십, 제품 데모에 관심 있으신 분께 언제든 연락 주세요.</span>
+
+  <p class="lab-compare-tagline fade-up">
+    <span class="lang-ko">Lab 3.0은 무슨 일이 일어났는지(past) 알려주지만,<br>Lab 4.0은 무슨 일이 일어날지(future), 그리고 그것을 어떻게 통제할지 알려줍니다.</span>
+    <span class="lang-en">Lab 3.0 tells you what happened (past)<br>Lab 4.0 tells you what will happen (future) — and how to control it.</span>
+  </p>
+
+  <!-- Comparison Table -->
+  <div class="lab-compare fade-up">
+    <!-- Lab 3.0 -->
+    <div class="lab-compare-row lab30">
+      <div class="lab-compare-header">
+        <span class="lang-ko">Lab 3.0 <span style="font-weight:500;opacity:0.75">(자동화 시대: 가시성 확보)</span></span>
+        <span class="lang-en">Lab 3.0 <span style="font-weight:500;opacity:0.75">(Automation Era: Visibility)</span></span>
+      </div>
+      <div class="lab-compare-items">
+        <div class="lab-compare-item lang-ko">장비 연결성</div>
+        <div class="lab-compare-item lang-en">Device Connectivity</div>
+        <div class="lab-compare-item lang-ko">현재 상황 모니터링</div>
+        <div class="lab-compare-item lang-en">Status Monitoring</div>
+        <div class="lab-compare-item lang-ko">병목 구간 알림</div>
+        <div class="lab-compare-item lang-en">Bottleneck Alerts</div>
+        <div class="lab-compare-item lang-ko">사후 대응적 조정</div>
+        <div class="lab-compare-item lang-en">Reactive Adjustments</div>
+      </div>
+    </div>
+    <!-- Arrow -->
+    <div class="lab-compare-arrow">▼</div>
+    <!-- Lab 4.0 -->
+    <div class="lab-compare-row lab40">
+      <div class="lab-compare-header">
+        <span class="lang-ko">Lab 4.0 <span style="font-weight:500;opacity:0.85">(최적화 시대: 통제가능성)</span></span>
+        <span class="lang-en">Lab 4.0 <span style="font-weight:500;opacity:0.85">(Optimization Era: Controllability)</span></span>
+      </div>
+      <div class="lab-compare-items">
+        <div class="lab-compare-item lang-ko"><span class="item-highlight">실시간</span> 디지털트윈</div>
+        <div class="lab-compare-item lang-en"><span class="item-highlight">Real-time</span> Digital Twin</div>
+        <div class="lab-compare-item lang-ko">시나리오 <span class="item-highlight">시뮬레이션</span></div>
+        <div class="lab-compare-item lang-en">Scenario <span class="item-highlight">Simulation</span></div>
+        <div class="lab-compare-item lang-ko"><span class="item-highlight">예측기반</span> 경로 최적화</div>
+        <div class="lab-compare-item lang-en"><span class="item-highlight">Predictive</span> Route Optimization</div>
+        <div class="lab-compare-item lang-ko">선제적 TAT 관리</div>
+        <div class="lab-compare-item lang-en">Proactive TAT Management</div>
+      </div>
+    </div>
+  </div>
+
+
+<style>
+.lab-compare { max-width: 900px; margin: 0 auto; }
+.lab-compare-row { border-radius: 12px; overflow: hidden; }
+.lab-compare-header {
+  padding: 16px 28px; font-size: 20px; font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.lab30 .lab-compare-header { background: #8A8F98; color: white; }
+.lab40 .lab-compare-header { background: var(--blue); color: white; }
+.lab-compare-items {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  background: #F0F2F5;
+}
+.lab40 .lab-compare-items { background: #E8F0FF; }
+.lab-compare-item {
+  padding: 18px 20px; font-size: 17px; font-weight: 500;
+  color: var(--gray-700); text-align: center;
+  border-right: 1px solid rgba(0,0,0,0.06);
+}
+.lab-compare-item:last-child { border-right: none; }
+.lab40 .lab-compare-item { color: var(--dark); }
+.item-highlight { color: var(--blue); font-weight: 800; }
+.lab-compare-arrow {
+  text-align: center; font-size: 34px; color: var(--gray-300);
+  padding: 16px 0;
+}
+.lab-compare-tagline {
+  text-align: center; margin: 0 auto 56px;
+  font-size: 20px; line-height: 1.75; color: var(--gray-500);
+  font-weight: 400; max-width: 820px; word-break: keep-all;
+}
+@media (max-width: 640px) {
+  .lab-compare-items { grid-template-columns: repeat(2,1fr); }
+  .lab-compare-item { font-size: 15px; padding: 14px 12px; }
+  .lab-compare-header { font-size: 17px; padding: 14px 16px; }
+}
+</style>
+</section>
+
+<!-- ── FEATURE ROW 1: Simulation ── -->
+<div class="feat-row" id="product">
+  <div class="fade-up">
+    <div class="eyebrow lang-ko">시뮬레이션</div>
+    <div class="eyebrow lang-en">Simulation</div>
+    <h2 class="sec-title">
+      <span class="lang-ko">실시간 데이터로<br><span class="accent">지속 학습하는 시뮬레이터</span></span>
+      <span class="lang-en">A Simulator that <span class="accent">Learns in Real Time</span></span>
+    </h2>
+    <p class="sec-desc">
+      <span class="lang-ko">검사실 운영 데이터를 실시간으로 수집·학습하여 최적 경로를 자동으로 갱신합니다. 현장의 변화가 즉시 시뮬레이션에 반영됩니다.</span>
+      <span class="lang-en">Continuously collects and learns from live lab data to auto-update optimal routes. Every operational change is reflected in real time.</span>
+    </p>
+    <div class="feat-pts">
+      <div class="feat-pt">
+        <div class="feat-pt-dot"></div>
+        <div>
+          <strong class="lang-ko">실시간 데이터 수집 및 학습</strong>
+          <strong class="lang-en">Real-time Data Ingestion & Learning</strong>
+          <span class="lang-ko">장비 상태·검체 흐름·처리 시간을 실시간으로 수집해 모델을 지속 갱신</span>
+          <span class="lang-en">Continuously ingests device status, specimen flow, and processing times to keep the model current</span>
+        </div>
+      </div>
+      <div class="feat-pt">
+        <div class="feat-pt-dot"></div>
+        <div>
+          <strong class="lang-ko">즉각 반영되는 최적화 결과</strong>
+          <strong class="lang-en">Instantly Applied Optimization</strong>
+          <span class="lang-ko">학습된 패턴을 기반으로 최적 경로를 자동 산출하고 운영에 즉시 적용</span>
+          <span class="lang-en">Automatically computes optimal routes from learned patterns and applies them without delay</span>
+        </div>
+      </div>
+      <div class="feat-pt">
+        <div class="feat-pt-dot"></div>
+        <div>
+          <strong class="lang-ko">실제 병원 환경 구축</strong>
+          <strong class="lang-en">Built for Real Hospital Environments</strong>
+          <span class="lang-ko">실제 병원 인프라와 연동해 현장 그대로의 디지털트윈을 구성</span>
+          <span class="lang-en">Integrated with real hospital infrastructure to replicate the exact operational environment as a digital twin</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="feat-row-vis fade-up">
+    <div class="sim-visual">
+      <div class="sim-title lang-ko">알고리즘별 실시간 TAT 비교</div>
+      <div class="sim-title lang-en">Real-time TAT Comparison by Algorithm</div>
+      <div class="sim-bars">
+        <div class="sim-bar-row">
+          <div class="sim-bar-top"><span class="sim-bar-name">Random (기준)</span><span class="sim-bar-val">99.6 min</span></div>
+          <div class="sim-bar-bg"><div class="sim-bar-fill" style="width:95%;background:rgba(255,255,255,0.18)"></div></div>
+        </div>
+        <div class="sim-bar-row">
+          <div class="sim-bar-top"><span class="sim-bar-name">Look_Ahead</span><span class="sim-bar-val">65.5 min</span></div>
+          <div class="sim-bar-bg"><div class="sim-bar-fill" style="width:62%;background:rgba(92,150,255,0.6)"></div></div>
+        </div>
+        <div class="sim-bar-row">
+          <div class="sim-bar-top"><span class="sim-bar-name">Greedy ★</span><span class="sim-bar-val" style="color:#4ADE80;">48.1 min</span></div>
+          <div class="sim-bar-bg"><div class="sim-bar-fill" style="width:46%;background:linear-gradient(90deg,#2C75FF,#4ADE80)"></div></div>
+        </div>
+        <div class="sim-bar-row">
+          <div class="sim-bar-top"><span class="sim-bar-name">Critical_Path ★</span><span class="sim-bar-val" style="color:#4ADE80;">48.0 min</span></div>
+          <div class="sim-bar-bg"><div class="sim-bar-fill" style="width:46%;background:linear-gradient(90deg,#2C75FF,#4ADE80)"></div></div>
+        </div>
+      </div>
+      <div class="sim-insight">
+        <strong class="lang-ko">▼ 52% TAT 단축</strong><strong class="lang-en">▼ 52% TAT Reduction</strong>
+        <span class="lang-ko"> — 하드웨어 추가 없이 알고리즘 최적화만으로 달성.</span>
+        <span class="lang-en"> — Achieved through algorithm optimization alone, no hardware changes.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURE ROW 2: Dashboard (alt) ── -->
+<div class="feat-row alt">
+  <div class="feat-row-vis fade-up">
+    <div class="dash" style="padding:20px;">
+      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px;">실시간 대시보드 — LIVE</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+        <div class="dash-kpi">
+          <div class="dash-kpi-label">전략</div>
+          <div style="font-size:18px;font-weight:800;color:#4ADE80;letter-spacing:-0.02em;">GREEDY</div>
+          <div class="dash-kpi-sub pos">Active</div>
+        </div>
+        <div class="dash-kpi">
+          <div class="dash-kpi-label">Duration</div>
+          <div style="font-size:18px;font-weight:800;color:white;letter-spacing:-0.02em;">6,092s</div>
+          <div class="dash-kpi-sub pos">vs Random 16,108s</div>
+        </div>
+        <div class="dash-kpi">
+          <div class="dash-kpi-label">Avg TAT</div>
+          <div class="dash-kpi-val c-blue" style="font-size:20px;">48.1 min</div>
+          <div class="dash-kpi-sub pos">▼ 51.7%</div>
+        </div>
+        <div class="dash-kpi">
+          <div class="dash-kpi-label">TAT Ratio</div>
+          <div style="font-size:20px;font-weight:800;color:white;letter-spacing:-0.02em;">37.72</div>
+          <div class="dash-kpi-sub pos">vs 66.96 baseline</div>
+        </div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-title">워크플로우 경로</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+          <span style="font-size:12px;padding:4px 9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.45);border-radius:5px;" class="lang-ko">채혈</span>
+          <span style="font-size:12px;padding:4px 9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.45);border-radius:5px;" class="lang-en">Collect</span>
+          <span style="color:rgba(255,255,255,0.2);font-size:14px;">›</span>
+          <span style="font-size:12px;padding:4px 9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.45);border-radius:5px;" class="lang-ko">접수</span>
+          <span style="font-size:12px;padding:4px 9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.45);border-radius:5px;" class="lang-en">Receive</span>
+          <span style="color:rgba(255,255,255,0.2);font-size:14px;">›</span>
+          <span style="font-size:12px;padding:4px 9px;background:var(--blue);color:white;border-radius:5px;" class="lang-ko">원심분리</span>
+          <span style="font-size:12px;padding:4px 9px;background:var(--blue);color:white;border-radius:5px;" class="lang-en">Centrifuge</span>
+          <span style="color:rgba(255,255,255,0.2);font-size:14px;">›</span>
+          <span style="font-size:12px;padding:4px 9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.45);border-radius:5px;" class="lang-ko">검사</span>
+          <span style="font-size:12px;padding:4px 9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.45);border-radius:5px;" class="lang-en">Analyze</span>
+          <span style="color:rgba(255,255,255,0.2);font-size:14px;">›</span>
+          <span style="font-size:12px;padding:4px 9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.45);border-radius:5px;" class="lang-ko">보고</span>
+          <span style="font-size:12px;padding:4px 9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.45);border-radius:5px;" class="lang-en">Report</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fade-up">
+    <div class="eyebrow lang-ko">실시간 모니터링</div>
+    <div class="eyebrow lang-en">Real-time Monitoring</div>
+    <h2 class="sec-title">
+      <span class="lang-ko">운영 전체를 <span class="accent">한 화면에서</span></span>
+      <span class="lang-en">Entire Operations <span class="accent">in One View</span></span>
+    </h2>
+    <p class="sec-desc">
+      <span class="lang-ko">검체 상태, 장비 가동률, TAT 트렌드를 실시간으로 모니터링하고 이상 징후를 즉시 감지합니다.</span>
+      <span class="lang-en">Monitor specimen status, equipment utilization, and TAT trends in real-time with instant anomaly detection.</span>
+    </p>
+    <div class="feat-pts" style="margin-top:32px;">
+      <div class="feat-pt">
+        <div class="feat-pt-dot"></div>
+        <div>
+          <strong class="lang-ko">실시간 대시보드</strong>
+          <strong class="lang-en">Real-time Dashboard</strong>
+          <span class="lang-ko">TAT, 검체 수, 장비 가동률, 달성률을 한눈에</span>
+          <span class="lang-en">TAT, specimen count, utilization, and achievement rate at a glance</span>
+        </div>
+      </div>
+      <div class="feat-pt">
+        <div class="feat-pt-dot"></div>
+        <div>
+          <strong class="lang-ko">자동 알림 시스템</strong>
+          <strong class="lang-en">Automated Alert System</strong>
+          <span class="lang-ko">원심분리기 지연 등 이상 상황 즉시 감지 및 알림</span>
+          <span class="lang-en">Instant detection and alerts for anomalies like centrifuge delays</span>
+        </div>
+      </div>
+      <div class="feat-pt">
+        <div class="feat-pt-dot"></div>
+        <div>
+          <strong class="lang-ko">알림을 넘어 해결까지</strong>
+          <strong class="lang-en">From Alert to Resolution</strong>
+          <span class="lang-ko">이상 감지 즉시 최적 대응 경로를 시뮬레이션하고 운영에 자동 반영합니다</span>
+          <span class="lang-en">On anomaly detection, the system simulates the optimal response and applies it to operations automatically</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ALGORITHM SECTION ── -->
+<section class="algo-section" id="algorithm">
+  <div class="algo-grid">
+    <div>
+      <div class="eyebrow fade-up lang-ko">알고리즘 성능</div>
+      <div class="eyebrow fade-up lang-en">Algorithm Performance</div>
+      <h2 class="sec-title fade-up">
+        <span class="lang-ko">실시간 학습으로 <span style="color:#5C96FF;">스스로 진화하는 최적화</span></span>
+        <span class="lang-en">Optimization that <span style="color:#5C96FF;">Evolves through Real-time Learning</span></span>
+      </h2>
+      <p class="sec-desc fade-up">
+        <span class="lang-ko">현장 데이터를 실시간으로 학습한 GREEDY 알고리즘이 Random 대비 TAT를 52% 단축합니다. 운영 환경이 바뀔수록 더 정확해집니다.</span>
+        <span class="lang-en">The GREEDY algorithm, trained on live operational data, cuts TAT by 52% vs. Random. Accuracy improves as the environment evolves.</span>
+      </p>
+      <div class="algo-cards fade-up">
+        <div class="algo-card">
+          <div class="algo-card-tag">RANDOM</div>
+          <div class="algo-card-info">
+            <div class="algo-card-name lang-ko">기준 (최적화 없음)</div>
+            <div class="algo-card-name lang-en">Baseline (No Optimization)</div>
+            <div class="algo-card-sub">Duration 16,108s · TAT Ratio 66.96</div>
+          </div>
+          <div class="algo-card-tat">
+            <div class="algo-card-tat-val">99.6 min</div>
+            <div class="algo-card-tat-lbl">Avg TAT</div>
+          </div>
+        </div>
+        <div class="algo-card">
+          <div class="algo-card-tag">LOOK_AHEAD</div>
+          <div class="algo-card-info">
+            <div class="algo-card-name">Look_Ahead</div>
+            <div class="algo-card-sub">Duration 10,483s · TAT Ratio 62.01</div>
+          </div>
+          <div class="algo-card-tat">
+            <div class="algo-card-tat-val">65.5 min</div>
+            <div class="algo-card-tat-lbl">Avg TAT</div>
+          </div>
+        </div>
+        <div class="algo-card best">
+          <div class="algo-card-tag">GREEDY ★ BEST</div>
+          <div class="algo-card-info">
+            <div class="algo-card-name">Greedy</div>
+            <div class="algo-card-sub">Duration 6,092s · TAT Ratio 37.72 · <span style="color:#4ADE80;font-weight:700;">▼ 51.7%</span></div>
+          </div>
+          <div class="algo-card-tat">
+            <div class="algo-card-tat-val">48.1 min</div>
+            <div class="algo-card-tat-lbl">Avg TAT</div>
+          </div>
+        </div>
+        <div class="algo-card best">
+          <div class="algo-card-tag">CRITICAL_PATH ★</div>
+          <div class="algo-card-info">
+            <div class="algo-card-name">Critical_Path</div>
+            <div class="algo-card-sub">Duration 6,087s · TAT Ratio 37.76 · <span style="color:#4ADE80;font-weight:700;">▼ 51.7%</span></div>
+          </div>
+          <div class="algo-card-tat">
+            <div class="algo-card-tat-val">48.0 min</div>
+            <div class="algo-card-tat-lbl">Avg TAT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right: bar chart -->
+    <div class="fade-up">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:16px;padding:28px;">
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:24px;" class="lang-ko">전략별 평균 TAT 비교</div>
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:24px;" class="lang-en">Avg TAT by Strategy</div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+              <span style="font-size:15px;color:rgba(255,255,255,0.6);">Random</span>
+              <span style="font-size:15px;color:rgba(255,255,255,0.4);font-weight:600;">99.6 min</span>
+            </div>
+            <div style="height:9px;background:rgba(255,255,255,0.07);border-radius:100px;overflow:hidden;">
+              <div style="width:95%;height:100%;border-radius:100px;background:rgba(255,255,255,0.2);"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+              <span style="font-size:15px;color:rgba(255,255,255,0.6);">Look_Ahead</span>
+              <span style="font-size:15px;color:rgba(255,255,255,0.4);font-weight:600;">65.5 min</span>
+            </div>
+            <div style="height:9px;background:rgba(255,255,255,0.07);border-radius:100px;overflow:hidden;">
+              <div style="width:62%;height:100%;border-radius:100px;background:rgba(92,150,255,0.55);"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+              <span style="font-size:15px;color:#4ADE80;font-weight:600;">Greedy ★</span>
+              <span style="font-size:15px;color:#4ADE80;font-weight:700;">48.1 min</span>
+            </div>
+            <div style="height:9px;background:rgba(255,255,255,0.07);border-radius:100px;overflow:hidden;">
+              <div style="width:46%;height:100%;border-radius:100px;background:linear-gradient(90deg,#2C75FF,#4ADE80);"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+              <span style="font-size:15px;color:#4ADE80;font-weight:600;">Critical_Path ★</span>
+              <span style="font-size:15px;color:#4ADE80;font-weight:700;">48.0 min</span>
+            </div>
+            <div style="height:9px;background:rgba(255,255,255,0.07);border-radius:100px;overflow:hidden;">
+              <div style="width:46%;height:100%;border-radius:100px;background:linear-gradient(90deg,#2C75FF,#4ADE80);"></div>
+            </div>
+          </div>
+        </div>
+        <div style="background:rgba(44,117,255,0.1);border:1px solid rgba(44,117,255,0.25);border-radius:10px;padding:16px;margin-top:24px;">
+          <div style="font-size:24px;font-weight:900;color:#4ADE80;letter-spacing:-0.03em;margin-bottom:6px;">▼ 52% TAT 단축</div>
+          <div style="font-size:15px;color:rgba(255,255,255,0.55);line-height:1.65;" class="lang-ko">하드웨어 추가 없이 소프트웨어 알고리즘 최적화만으로 달성한 결과입니다.</div>
+          <div style="font-size:15px;color:rgba(255,255,255,0.55);line-height:1.65;" class="lang-en">Achieved through software optimization alone — no additional hardware required.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section" id="contact">
+  <div class="eyebrow fade-up lang-ko">지금 시작하세요</div>
+  <div class="eyebrow fade-up lang-en" style="display:none">Get Started</div>
+  <h2 class="sec-title fade-up">
+    <span class="lang-ko">검사실의 미래를 함께 만들어가세요</span>
+    <span class="lang-en">Build the Future of Clinical Laboratories</span>
+  </h2>
+  <p class="sec-desc fade-up">
+    <span class="lang-ko">투자 문의, 파트너십, 무료 데모에 관심 있으신 분께서는 언제든 연락 주세요.</span>
     <span class="lang-en">Interested in investment, partnerships, or product demos? We'd love to hear from you.</span>
   </p>
-  <div class="contact-links">
-    <a href="mailto:contact@rondhealth.com" class="contact-link white">✉️ contact@rondhealth.com</a>
-    <a href="https://www.rondhealth.com" target="_blank" rel="noopener" class="contact-link outline">🌐 www.rondhealth.com</a>
+  <div class="cta-btns fade-up">
+    <a href="mailto:sarah@rondcorp.com" class="btn-contact">✉️ sarah@rondcorp.com</a>
   </div>
 </section>
 
 <footer>
-  <div class="footer-logo">Rond<span>Health</span></div>
+  <div class="footer-logo">ROND<span>Health</span></div>
   <div class="footer-copy">© 2026 RONDHealth. All Rights Reserved.</div>
 </footer>
 
 <script>
-/* ── UI 최적화 JS ── */
-
-// ⑧ 언어 전환
 function setLang(lang) {
-  // body에 기존 다른 클래스를 보존하면서 'en' 클래스만 토글
-  if (lang === 'en') {
-    document.body.classList.add('en');
-  } else {
-    document.body.classList.remove('en');
-  }
+  if (lang === 'en') { document.body.classList.add('en'); }
+  else { document.body.classList.remove('en'); }
   document.getElementById('btn-ko').classList.toggle('active', lang === 'ko');
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-  // 테이블 헤더 교체
-  var labels = lang === 'en'
-    ? ['Category','Conventional (Lab 3.0)','Rond Lab™ (Lab 4.0)']
-    : ['비교 항목','기존 접근 (Lab 3.0)','Rond Lab™ (Lab 4.0)'];
-  ['th1','th2','th3'].forEach(function(id,i){ document.getElementById(id).textContent = labels[i]; });
 }
 
-// ⑨ IntersectionObserver — 스크롤 fade-up
 var io = new IntersectionObserver(function(entries) {
-  entries.forEach(function(entry) {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      io.unobserve(entry.target);
-    }
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.fade-up').forEach(function(el){ io.observe(el); });
 
-// ⑩ 차트 바 애니메이션 — transition 방식
-var chartIO = new IntersectionObserver(function(entries) {
-  entries.forEach(function(entry) {
-    if (entry.isIntersecting) {
-      entry.target.querySelectorAll('.chart-bar-fill').forEach(function(bar) {
-        var w = bar.getAttribute('data-w');
-        if (w) { setTimeout(function(){ bar.style.width = w; }, 200); }
-      });
-      chartIO.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.3 });
-var tc = document.getElementById('tatChart');
-if (tc) chartIO.observe(tc);
-
-// ⑪ 부모 프레임에 높이 전달 (Iframe 자동 높이 조정)
-function postHeight() {
-  var h = document.body.scrollHeight;
-  try { window.parent.postMessage({ type: 'wix-iframe-height', height: h }, '*'); } catch(e){}
-}
-window.addEventListener('load', postHeight);
-window.addEventListener('resize', postHeight);
-// MutationObserver로 동적 변경도 감지
-if (window.MutationObserver) {
-  new MutationObserver(postHeight).observe(document.body, { childList:true, subtree:true, attributes:true });
-}
-
-// ⑫ 앵커 스크롤 — iframe 내부에서 동작
 document.querySelectorAll('a[href^="#"]').forEach(function(a) {
   a.addEventListener('click', function(e) {
-    var target = document.querySelector(a.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    var t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
 });
 </script>
